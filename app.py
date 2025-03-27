@@ -522,6 +522,10 @@ def calculate_slab_estimates(slab_data, ratio_data, rebar_data, rates_and_wastag
         'rebar_breakdown': rebar_breakdown
     }
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     load_dotenv()
     app.run(debug=True)
+
+   # Add this at the bottom of your app.py
+   if __name__ == '__main__':
+       app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
