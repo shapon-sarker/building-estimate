@@ -2,8 +2,4 @@ Flask==3.0.2
 Flask-WTF==1.2.1
 WTForms==3.1.2
 python-dotenv==1.0.1
-<<<<<<< HEAD
 gunicorn==21.2.0
-=======
-gunicorn
->>>>>>> f6552fb0eb87c1d65057fc4a283a856e3e19e86e
