@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import math
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
@@ -522,10 +523,6 @@ def calculate_slab_estimates(slab_data, ratio_data, rebar_data, rates_and_wastag
         'rebar_breakdown': rebar_breakdown
     }
 
-#if __name__ == '__main__':
-    load_dotenv()
-    app.run(debug=True)
-
-   # Add this at the bottom of your app.py
-   if __name__ == '__main__':
-       app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
+# Make sure there are no spaces or tabs before this line
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
