@@ -1,0 +1,556 @@
+{% extends "base.html" %}
+
+{% block title %}Slab Estimate{% endblock %}
+
+{% block content %}
+<style>
+    /* Standardize input field sizes in tables */
+    .table input.form-control-sm {
+        min-width: 80px;
+        width: 100%;
+        max-width: 120px;
+    }
+    
+    /* Ensure table cells have enough width */
+    .table th, .table td {
+        min-width: 100px;
+        padding: 8px;
+    }
+    
+    /* Make the first column (Description) wider */
+    .table td:first-child {
+        min-width: 150px;
+        width: auto;
+    }
+    
+    /* Ensure table wrapper allows horizontal scrolling */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+
+<div class="container-fluid px-4 py-5">
+    <h1 class="text-center mb-5 animate__animated animate__fadeIn">Slab Estimate And Costing</h1>
+    
+    <form id="slabEstimateForm" class="needs-validation" novalidate>
+        <!-- Slab Details Section -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Slab Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NOS</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="nos_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Long Direction Length (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_direction_length_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Short Direction Length (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_direction_length_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Slab Thickness (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="slab_thickness_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Clear Cover (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="clear_cover_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RCC Casting Ratio Section -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">RCC Casting Ratio</h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Type-1</label>
+                        <input type="number" class="form-control" name="ratio_type1" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type-2</label>
+                        <input type="number" class="form-control" name="ratio_type2" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type-3</label>
+                        <input type="number" class="form-control" name="ratio_type3" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Total Ratio</label>
+                        <input type="number" class="form-control" id="totalRatio" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slab Rebar Calculation Section -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Slab Rebar Calculation</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Long Direction Section -->
+                            <tr class="table-secondary">
+                                <td colspan="16"><strong>Long Direction</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Large Dia (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_large_dia_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spacing (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_spacing_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Lapping (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_lapping_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Short Direction Section -->
+                            <tr class="table-secondary">
+                                <td colspan="16"><strong>Short Direction</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Large Dia (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_large_dia_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spacing (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_spacing_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Lapping (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_lapping_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Long Direction Extra Top Section -->
+                            <tr class="table-secondary">
+                                <td colspan="16"><strong>Long Direction Extra Top</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Dia (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_extra_dia_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Extra Top Nos</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_extra_nos_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Extra Top Length (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="long_extra_length_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Short Direction Extra Top Section -->
+                            <tr class="table-secondary">
+                                <td colspan="16"><strong>Short Direction Extra Top</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Dia (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_extra_dia_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Extra Top Nos</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_extra_nos_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Extra Top Length (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" class="form-control form-control-sm" name="short_extra_length_{{ i }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rates and Wastage Section -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.6s">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Rates and Wastage</h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Cement Rate (TK)</label>
+                        <input type="number" class="form-control" name="cement_rate" value="550.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Sand Rate (TK)</label>
+                        <input type="number" class="form-control" name="sand_rate" value="45.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Stone Rate (TK)</label>
+                        <input type="number" class="form-control" name="stone_rate" value="45.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Rebar Rate (TK)</label>
+                        <input type="number" class="form-control" name="rebar_rate" value="95000.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Formwork Rate (TK)</label>
+                        <input type="number" class="form-control" name="formwork_rate" value="30.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Casting Rate (TK)</label>
+                        <input type="number" class="form-control" name="casting_rate" value="0.0" step="any">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Wastage (%)</label>
+                        <input type="number" class="form-control" name="wastage_percent" value="10.0" step="any">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary btn-lg px-5 animate__animated animate__fadeInUp" style="animation-delay: 0.8s">
+                Calculate
+            </button>
+        </div>
+    </form>
+
+    <!-- Results Section -->
+    <div id="results" class="d-none">
+        <!-- Results-1: Slab Estimated And Price -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">Slab Estimated And Price</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Wastage Material (%)</th>
+                                <th>Total Quantity (Wastage Add)</th>
+                                <th>Rate (TK)</th>
+                                <th>Amount (TK)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cement</td>
+                                <td id="cement_qty">-</td>
+                                <td id="wastage_percent_display">-</td>
+                                <td id="cement_with_wastage">-</td>
+                                <td id="cement_rate_display">-</td>
+                                <td id="cement_cost">-</td>
+                            </tr>
+                            <tr>
+                                <td>Sand</td>
+                                <td id="sand_qty">-</td>
+                                <td id="wastage_percent_display2">-</td>
+                                <td id="sand_with_wastage">-</td>
+                                <td id="sand_rate_display">-</td>
+                                <td id="sand_cost">-</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-select" id="stone_type">
+                                        <option value="stone">Stone/Brick Chips (CFT)</option>
+                                        <option value="brick">Brick Nos For Brick Chips</option>
+                                    </select>
+                                </td>
+                                <td id="stone_qty">-</td>
+                                <td id="wastage_percent_display3">-</td>
+                                <td id="stone_with_wastage">-</td>
+                                <td id="stone_rate_display">-</td>
+                                <td id="stone_cost">-</td>
+                            </tr>
+                            <tr>
+                                <td>Rod/Rebar</td>
+                                <td id="rebar_qty">-</td>
+                                <td id="wastage_percent_display4">-</td>
+                                <td id="rebar_with_wastage">-</td>
+                                <td id="rebar_rate_display">-</td>
+                                <td id="rebar_cost">-</td>
+                            </tr>
+                            <tr>
+                                <td>Formwork</td>
+                                <td id="formwork_qty">-</td>
+                                <td id="wastage_percent_display5">-</td>
+                                <td id="formwork_with_wastage">-</td>
+                                <td id="formwork_rate_display">-</td>
+                                <td id="formwork_cost">-</td>
+                            </tr>
+                            <tr>
+                                <td>Casting</td>
+                                <td id="casting_qty">-</td>
+                                <td id="wastage_percent_display6">-</td>
+                                <td id="casting_with_wastage">-</td>
+                                <td id="casting_rate_display">-</td>
+                                <td id="casting_cost">-</td>
+                            </tr>
+                            <tr class="table-primary">
+                                <td colspan="5" class="text-end"><strong>Total Cost</strong></td>
+                                <td id="total_cost">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results-2: Reinforcement -->
+        <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title mb-0">Reinforcement</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Reinforcement Size</th>
+                                <th>Rebar Quantity (KG)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>8 MM</td><td id="rebar_8mm">-</td></tr>
+                            <tr><td>10 MM</td><td id="rebar_10mm">-</td></tr>
+                            <tr><td>12 MM</td><td id="rebar_12mm">-</td></tr>
+                            <tr><td>16 MM</td><td id="rebar_16mm">-</td></tr>
+                            <tr><td>20 MM</td><td id="rebar_20mm">-</td></tr>
+                            <tr><td>25 MM</td><td id="rebar_25mm">-</td></tr>
+                            <tr><td>28 MM</td><td id="rebar_28mm">-</td></tr>
+                            <tr><td>32 MM</td><td id="rebar_32mm">-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('slabEstimateForm');
+    const results = document.getElementById('results');
+    
+    // Update total ratio
+    const updateTotalRatio = () => {
+        const type1 = parseFloat(form.ratio_type1.value) || 0;
+        const type2 = parseFloat(form.ratio_type2.value) || 0;
+        const type3 = parseFloat(form.ratio_type3.value) || 0;
+        document.getElementById('totalRatio').value = type1 + type2 + type3;
+    };
+
+    // Add event listeners to ratio inputs
+    form.ratio_type1.addEventListener('input', updateTotalRatio);
+    form.ratio_type2.addEventListener('input', updateTotalRatio);
+    form.ratio_type3.addEventListener('input', updateTotalRatio);
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const formData = {
+            nos: [],
+            long_direction_length: [],
+            short_direction_length: [],
+            slab_thickness: [],
+            clear_cover: [],
+            long_large_dia: [],
+            long_spacing: [],
+            long_lapping: [],
+            short_large_dia: [],
+            short_spacing: [],
+            short_lapping: [],
+            long_extra_dia: [],
+            long_extra_nos: [],
+            long_extra_length: [],
+            short_extra_dia: [],
+            short_extra_nos: [],
+            short_extra_length: []
+        };
+
+        // Collect array data
+        for (let i = 0; i < 15; i++) {
+            formData.nos.push(form[`nos_${i}`].value || null);
+            formData.long_direction_length.push(form[`long_direction_length_${i}`].value || null);
+            formData.short_direction_length.push(form[`short_direction_length_${i}`].value || null);
+            formData.slab_thickness.push(form[`slab_thickness_${i}`].value || null);
+            formData.clear_cover.push(form[`clear_cover_${i}`].value || null);
+            formData.long_large_dia.push(form[`long_large_dia_${i}`].value || null);
+            formData.long_spacing.push(form[`long_spacing_${i}`].value || null);
+            formData.long_lapping.push(form[`long_lapping_${i}`].value || null);
+            formData.short_large_dia.push(form[`short_large_dia_${i}`].value || null);
+            formData.short_spacing.push(form[`short_spacing_${i}`].value || null);
+            formData.short_lapping.push(form[`short_lapping_${i}`].value || null);
+            formData.long_extra_dia.push(form[`long_extra_dia_${i}`].value || null);
+            formData.long_extra_nos.push(form[`long_extra_nos_${i}`].value || null);
+            formData.long_extra_length.push(form[`long_extra_length_${i}`].value || null);
+            formData.short_extra_dia.push(form[`short_extra_dia_${i}`].value || null);
+            formData.short_extra_nos.push(form[`short_extra_nos_${i}`].value || null);
+            formData.short_extra_length.push(form[`short_extra_length_${i}`].value || null);
+        }
+
+        // Add ratio data
+        formData.ratio_type1 = form.ratio_type1.value;
+        formData.ratio_type2 = form.ratio_type2.value;
+        formData.ratio_type3 = form.ratio_type3.value;
+
+        // Add rates and wastage
+        formData.cement_rate = form.cement_rate.value;
+        formData.sand_rate = form.sand_rate.value;
+        formData.stone_rate = form.stone_rate.value;
+        formData.rebar_rate = form.rebar_rate.value;
+        formData.formwork_rate = form.formwork_rate.value;
+        formData.casting_rate = form.casting_rate.value;
+        formData.wastage_percent = form.wastage_percent.value;
+
+        try {
+            const response = await fetch('/calculate-slab', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            
+            // Update results
+            document.getElementById('cement_qty').textContent = data.cement_bags.toFixed(2) + ' Bag';
+            document.getElementById('sand_qty').textContent = data.sand_cft.toFixed(2) + ' CFT';
+            document.getElementById('stone_qty').textContent = data.stone_chips_cft.toFixed(2) + ' CFT';
+            document.getElementById('rebar_qty').textContent = (data.rebar_kg/1000).toFixed(3) + ' TON';
+            document.getElementById('formwork_qty').textContent = data.formwork_sft.toFixed(2) + ' SFT';
+            document.getElementById('casting_qty').textContent = data.casting_cft.toFixed(2) + ' CFT';
+
+            // Update wastage quantities
+            const wastagePercent = formData.wastage_percent + '%';
+            document.querySelectorAll('[id^="wastage_percent_display"]').forEach(el => {
+                el.textContent = wastagePercent;
+            });
+
+            document.getElementById('cement_with_wastage').textContent = data.cement_bags.toFixed(2) + ' Bag';
+            document.getElementById('sand_with_wastage').textContent = data.sand_cft.toFixed(2) + ' CFT';
+            document.getElementById('stone_with_wastage').textContent = data.stone_chips_cft.toFixed(2) + ' CFT';
+            document.getElementById('rebar_with_wastage').textContent = (data.rebar_kg/1000).toFixed(3) + ' TON';
+            document.getElementById('formwork_with_wastage').textContent = data.formwork_sft.toFixed(2) + ' SFT';
+            document.getElementById('casting_with_wastage').textContent = data.casting_cft.toFixed(2) + ' CFT';
+
+            // Update rates
+            document.getElementById('cement_rate_display').textContent = formData.cement_rate + ' TK';
+            document.getElementById('sand_rate_display').textContent = formData.sand_rate + ' TK';
+            document.getElementById('stone_rate_display').textContent = formData.stone_rate + ' TK';
+            document.getElementById('rebar_rate_display').textContent = formData.rebar_rate + ' TK';
+            document.getElementById('formwork_rate_display').textContent = formData.formwork_rate + ' TK';
+            document.getElementById('casting_rate_display').textContent = formData.casting_rate + ' TK';
+
+            // Update costs
+            document.getElementById('cement_cost').textContent = data.cement_cost.toFixed(2) + ' TK';
+            document.getElementById('sand_cost').textContent = data.sand_cost.toFixed(2) + ' TK';
+            document.getElementById('stone_cost').textContent = data.stone_cost.toFixed(2) + ' TK';
+            document.getElementById('rebar_cost').textContent = data.rebar_cost.toFixed(2) + ' TK';
+            document.getElementById('formwork_cost').textContent = data.formwork_cost.toFixed(2) + ' TK';
+            document.getElementById('casting_cost').textContent = data.casting_cost.toFixed(2) + ' TK';
+            document.getElementById('total_cost').textContent = data.total_amount.toFixed(2) + ' TK';
+
+            // Update rebar breakdown
+            document.getElementById('rebar_8mm').textContent = data.rebar_breakdown['8_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_10mm').textContent = data.rebar_breakdown['10_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_12mm').textContent = data.rebar_breakdown['12_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_16mm').textContent = data.rebar_breakdown['16_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_20mm').textContent = data.rebar_breakdown['20_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_25mm').textContent = data.rebar_breakdown['25_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_28mm').textContent = data.rebar_breakdown['28_mm'].toFixed(3) + ' KG';
+            document.getElementById('rebar_32mm').textContent = data.rebar_breakdown['32_mm'].toFixed(3) + ' KG';
+
+            // Show results
+            results.classList.remove('d-none');
+            results.scrollIntoView({ behavior: 'smooth' });
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while calculating. Please try again.');
+        }
+    });
+
+    // Stone type dropdown handler
+    document.getElementById('stone_type').addEventListener('change', function() {
+        const qty = document.getElementById('stone_qty').textContent;
+        const unit = this.value === 'stone' ? 'CFT' : 'NOS';
+        document.getElementById('stone_qty').textContent = qty.replace(/CFT|NOS/, unit);
+        document.getElementById('stone_with_wastage').textContent = 
+            document.getElementById('stone_with_wastage').textContent.replace(/CFT|NOS/, unit);
+    });
+});
+</script>
+{% endblock %} 

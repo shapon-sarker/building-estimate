@@ -1,0 +1,138 @@
+/* Global Styles */
+body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Company Header */
+.company-header {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+/* Form Styles */
+.form-control {
+    border-radius: 5px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Results Table Specific Styles */
+#resultsTable th {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+}
+
+#resultsTable td {
+    padding: 0.75rem;
+}
+
+#resultsTable .text-end {
+    text-align: right !important;
+}
+
+#resultsTable tr:last-child {
+    border-top: 2px solid #0d6efd;
+}
+
+#resultsTable tr:last-child td {
+    font-size: 1.1em;
+    background-color: #e7f1ff;
+}
+
+/* Print Styles */
+@media print {
+    .navbar, .footer, .btn {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #dee2e6 !important;
+        box-shadow: none !important;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa !important;
+        color: #333 !important;
+    }
+    
+    body {
+        font-size: 12pt;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+    
+    #results {
+        page-break-inside: avoid;
+    }
+    
+    #resultsTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #resultsTable th,
+    #resultsTable td {
+        padding: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    #resultsTable th {
+        background-color: #f8f9fa !important;
+        color: #333 !important;
+        border-bottom: 2px solid #333 !important;
+        text-align: center !important;
+    }
+
+    #resultsTable .text-end {
+        text-align: right !important;
+    }
+    
+    #resultsTable tr:last-child {
+        border-top: 2px solid #333 !important;
+    }
+    
+    #resultsTable tr:last-child td {
+        background-color: #f8f9fa !important;
+        font-weight: bold !important;
+    }
+}

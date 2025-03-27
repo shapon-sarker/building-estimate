@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5">
+    <div class="company-header text-center mb-5 animate__animated animate__fadeIn">
+        <h1>Company Name</h1>
+        <p>Building Estimate Calculator</p>
+    </div>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <!-- Pile Estimate Card -->
+        <div class="col d-flex align-items-start animate__animated animate__fadeInUp">
+            <div class="card w-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Pile Estimate</h3>
+                    <p class="card-text">Calculate reinforcement and material requirements for piles.</p>
+                    <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary">
+                        Calculate Pile Estimate
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Long Tied Column Card -->
+        <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+            <div class="card w-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Long Tied Column</h3>
+                    <p class="card-text">Calculate reinforcement and material requirements for long tied columns.</p>
+                    <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary">
+                        Calculate Long Tied Column
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slab Estimate Card -->
+        <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+            <div class="card w-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Slab Estimate</h3>
+                    <p class="card-text">Calculate reinforcement and material requirements for slabs.</p>
+                    <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary">
+                        Calculate Slab Estimate
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Active Options -->
+    
+    <!-- Coming Soon Options -->
+    {% set options = [
+        ('Long Circular Column', 'Estimate materials and costs for circular columns with detailed reinforcement.'),
+        ('Short Tied Column', 'Compute estimates for short tied columns with proper reinforcement details.'),
+        ('Short Circular Column', 'Compute estimates for short circular columns with ties.'),
+        ('Grade Beam', 'Calculate materials and reinforcement for grade beams with accurate measurements.'),
+        ('Floor Beam', 'Estimate beam requirements including concrete volume and steel reinforcement.'),
+        ('Stair', 'Calculate concrete and reinforcement requirements for staircase construction.'),
+        ('Slab', 'Compute slab estimates with proper thickness and reinforcement details.'),
+        ('RCC Wall', 'Calculate materials for RCC walls including reinforcement patterns.'),
+        ('Water Reservoir', 'Estimate materials for water tank construction with waterproofing.'),
+        ('Brick Masonry', 'Calculate brick requirements with mortar ratio and wastage.'),
+        ('Plaster and Paint Work', 'Estimate plaster materials and paint coverage with wastage.'),
+        ('Tiles Work', 'Calculate tile requirements with adhesive and grouting materials.'),
+        ('Rectangular Pile Cap', 'Compute pile cap estimates for rectangular configurations.'),
+        ('Trapezoidal Pile Cap', 'Calculate materials for trapezoidal pile cap arrangements.'),
+        ('Mat Foundation', 'Estimate materials for mat foundation with reinforcement details.'),
+        ('Footing Estimate', 'Calculate isolated and combined footing requirements.'),
+        ('Result', 'View and export detailed estimation reports.')
+    ] %}
+    {% for title, description in options %}
+    <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 + 0.2 }}s">
+        <div class="card w-100 shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ title }}</h5>
+                <p class="card-text">{{ description }}</p>
+                <button class="btn btn-secondary" disabled>Coming Soon</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

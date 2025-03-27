@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Pile Estimate{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Pile Estimate Calculator</h2>
+    
+    <form id="pileEstimateForm" class="needs-validation" novalidate>
+        <!-- Pile Estimated Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Pile Estimated</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Input 1</th>
+                                <th>Input 2</th>
+                                <th>Input 3</th>
+                                <th>Input 4</th>
+                                <th>Input 5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NOS</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="A{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Pile Dia in (inches)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="B{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Total Pile Height in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="C{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Pile Cut Off Level in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="D{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>C.C in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="E{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Clear Cover in (inches)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="F{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RCC Casting Ratio Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">RCC Casting Ratio</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Input 1</label>
+                            <input type="number" class="form-control" name="aa" step="any">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Input 2</label>
+                            <input type="number" class="form-control" name="bb" step="any">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Input 3</label>
+                            <input type="number" class="form-control" name="cc" step="any">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pile Rebar Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Pile Rebar</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Input 1</th>
+                                <th>Input 2</th>
+                                <th>Input 3</th>
+                                <th>Input 4</th>
+                                <th>Input 5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Large Dia in (mm)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="G{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Large Dia (Nos)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="H{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Large Dia Lapping in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="I{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Small Dia in (mm)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="J{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Small Dia (Nos)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="K{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Small Dia Lapping in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="L{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spiral Rod Dia in (mm)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="M{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spacing in (inches)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="N{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spiral Rod Lapping in (ft)</td>
+                                {% for i in range(5) %}
+                                <td><input type="number" class="form-control" name="O{{ i+1 }}" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Material Rates Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Material Rates</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Cement Rate (TK/Bag)</label>
+                            <input type="number" class="form-control" name="cement_rate" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Cement Wastage (%)</label>
+                            <input type="number" class="form-control" name="cement_wastage" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Sand Rate (TK/CFT)</label>
+                            <input type="number" class="form-control" name="sand_rate" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Sand Wastage (%)</label>
+                            <input type="number" class="form-control" name="sand_wastage" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Stone Chips Rate (TK/CFT)</label>
+                            <input type="number" class="form-control" name="stone_rate" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Stone Chips Wastage (%)</label>
+                            <input type="number" class="form-control" name="stone_wastage" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Rebar Rate (TK/Ton)</label>
+                            <input type="number" class="form-control" name="rebar_rate" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Rebar Wastage (%)</label>
+                            <input type="number" class="form-control" name="rebar_wastage" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary btn-lg">Calculate</button>
+        </div>
+    </form>
+
+    <!-- Results Section -->
+    <div id="results" class="card mb-4 d-none">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Results</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody id="resultsTable">
+                        <!-- Results will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-3">
+                <button id="printButton" class="btn btn-secondary">Print Results</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pile_estimate.js') }}"></script>
+{% endblock %}
