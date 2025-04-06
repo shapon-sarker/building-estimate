@@ -4,9 +4,37 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress"></div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay">
+    <div class="loader"></div>
+</div>
+
+<!-- Particle Background -->
+<div id="particles-js"></div>
+
+<!-- Floating Shapes -->
+<div class="floating-shapes">
+    <svg class="shape" width="50" height="50" viewBox="0 0 50 50">
+        <rect width="50" height="50" fill="white"/>
+    </svg>
+    <svg class="shape" width="50" height="50" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="20" fill="white"/>
+    </svg>
+    <svg class="shape" width="50" height="50" viewBox="0 0 50 50">
+        <polygon points="25,5 45,45 5,45" fill="white"/>
+    </svg>
+    <svg class="shape" width="50" height="50" viewBox="0 0 50 50">
+        <path d="M25,5 L45,25 L25,45 L5,25 Z" fill="white"/>
+    </svg>
+</div>
+
 <div class="container px-4 py-5">
     <div class="company-header text-center mb-5 animate__animated animate__fadeIn">
         <h1>Building Estimate</h1>
@@ -21,9 +49,12 @@
             <div class="col d-flex align-items-start animate__animated animate__fadeInUp">
                 <div class="card w-100 shadow-sm">
                     <div class="card-body">
-                        <h3 class="card-title">Pile Estimate</h3>
+                        <h3 class="card-title">
+                            <i class="fas fa-ruler-combined card-icon"></i>
+                            Pile Estimate
+                        </h3>
                         <p class="card-text">Calculate reinforcement and material requirements for piles.</p>
-                        <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary">
+                        <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary btn-ripple">
                             Calculate Pile Estimate
                         </a>
                     </div>
@@ -34,9 +65,12 @@
             <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
                 <div class="card w-100 shadow-sm">
                     <div class="card-body">
-                        <h3 class="card-title">Long Tied Column</h3>
+                        <h3 class="card-title">
+                            <i class="fas fa-columns card-icon"></i>
+                            Long Tied Column
+                        </h3>
                         <p class="card-text">Calculate reinforcement and material requirements for long tied columns.</p>
-                        <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary">
+                        <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary btn-ripple">
                             Calculate Long Tied Column
                         </a>
                     </div>
@@ -47,9 +81,12 @@
             <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
                 <div class="card w-100 shadow-sm">
                     <div class="card-body">
-                        <h3 class="card-title">Long Circular Column</h3>
+                        <h3 class="card-title">
+                            <i class="fas fa-circle card-icon"></i>
+                            Long Circular Column
+                        </h3>
                         <p class="card-text">Calculate reinforcement and material requirements for long circular columns.</p>
-                        <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary">
+                        <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary btn-ripple">
                             Calculate Long Circular Column
                         </a>
                     </div>
@@ -60,9 +97,12 @@
             <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
                 <div class="card w-100 shadow-sm">
                     <div class="card-body">
-                        <h3 class="card-title">Slab Estimate</h3>
+                        <h3 class="card-title">
+                            <i class="fas fa-square card-icon"></i>
+                            Slab Estimate
+                        </h3>
                         <p class="card-text">Calculate reinforcement and material requirements for slabs.</p>
-                        <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary">
+                        <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary btn-ripple">
                             Calculate Slab Estimate
                         </a>
                     </div>
@@ -76,28 +116,31 @@
         <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn" style="animation-delay: 0.5s">Coming Soon</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% set options = [
-                ('Short Tied Column', 'Compute estimates for short tied columns with proper reinforcement details.'),
-                ('Short Circular Column', 'Compute estimates for short circular columns with ties.'),
-                ('Grade Beam', 'Calculate materials and reinforcement for grade beams with accurate measurements.'),
-                ('Floor Beam', 'Estimate beam requirements including concrete volume and steel reinforcement.'),
-                ('Stair', 'Calculate concrete and reinforcement requirements for staircase construction.'),
-                ('Slab', 'Compute slab estimates with proper thickness and reinforcement details.'),
-                ('RCC Wall', 'Calculate materials for RCC walls including reinforcement patterns.'),
-                ('Water Reservoir', 'Estimate materials for water tank construction with waterproofing.'),
-                ('Brick Masonry', 'Calculate brick requirements with mortar ratio and wastage.'),
-                ('Plaster and Paint Work', 'Estimate plaster materials and paint coverage with wastage.'),
-                ('Tiles Work', 'Calculate tile requirements with adhesive and grouting materials.'),
-                ('Rectangular Pile Cap', 'Compute pile cap estimates for rectangular configurations.'),
-                ('Trapezoidal Pile Cap', 'Calculate materials for trapezoidal pile cap arrangements.'),
-                ('Mat Foundation', 'Estimate materials for mat foundation with reinforcement details.'),
-                ('Footing Estimate', 'Calculate isolated and combined footing requirements.'),
-                ('Result', 'View and export detailed estimation reports.')
+                ('Short Tied Column', 'Compute estimates for short tied columns with proper reinforcement details.', 'columns'),
+                ('Short Circular Column', 'Compute estimates for short circular columns with ties.', 'circle'),
+                ('Grade Beam', 'Calculate materials and reinforcement for grade beams with accurate measurements.', 'grip-lines'),
+                ('Floor Beam', 'Estimate beam requirements including concrete volume and steel reinforcement.', 'grip-lines-vertical'),
+                ('Stair', 'Calculate concrete and reinforcement requirements for staircase construction.', 'stairs'),
+                ('Slab', 'Compute slab estimates with proper thickness and reinforcement details.', 'square'),
+                ('RCC Wall', 'Calculate materials for RCC walls including reinforcement patterns.', 'wall'),
+                ('Water Reservoir', 'Estimate materials for water tank construction with waterproofing.', 'water'),
+                ('Brick Masonry', 'Calculate brick requirements with mortar ratio and wastage.', 'border-all'),
+                ('Plaster and Paint Work', 'Estimate plaster materials and paint coverage with wastage.', 'paint-roller'),
+                ('Tiles Work', 'Calculate tile requirements with adhesive and grouting materials.', 'th-large'),
+                ('Rectangular Pile Cap', 'Compute pile cap estimates for rectangular configurations.', 'vector-square'),
+                ('Trapezoidal Pile Cap', 'Calculate materials for trapezoidal pile cap arrangements.', 'draw-polygon'),
+                ('Mat Foundation', 'Estimate materials for mat foundation with reinforcement details.', 'layer-group'),
+                ('Footing Estimate', 'Calculate isolated and combined footing requirements.', 'shoe-prints'),
+                ('Result', 'View and export detailed estimation reports.', 'file-export')
             ] %}
-            {% for title, description in options %}
+            {% for title, description, icon in options %}
             <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 + 0.6 }}s">
                 <div class="card w-100 shadow-sm h-100">
                     <div class="card-body">
-                        <h5 class="card-title">{{ title }}</h5>
+                        <h5 class="card-title">
+                            <i class="fas fa-{{ icon }} card-icon"></i>
+                            {{ title }}
+                        </h5>
                         <p class="card-text">{{ description }}</p>
                         <button class="btn btn-secondary" disabled>Coming Soon</button>
                     </div>
@@ -110,9 +153,78 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-    // Add scroll reveal effect for cards
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.1, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.1, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // Card hover effect
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+                const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        // Ripple effect for buttons
+        document.querySelectorAll('.btn-ripple').forEach(button => {
+            button.addEventListener('click', e => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                button.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Loading animation
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', e => {
+                const overlay = document.querySelector('.loading-overlay');
+                overlay.classList.add('active');
+            });
+        });
+
+        // Scroll progress
+        const progressBar = document.querySelector('.scroll-progress');
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.transform = `scaleX(${scrolled / 100})`;
+        });
+
+        // Intersection Observer for scroll animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
