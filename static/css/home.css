@@ -1,14 +1,17 @@
-/* Modern Construction Theme */
+/* Modern Construction Theme - Light Version */
 :root {
     --primary-color: #2b4c7e;
     --secondary-color: #567ebb;
     --accent-color: #ff6b6b;
-    --background-start: #1a1a1a;
-    --background-end: #2d2d2d;
-    --card-bg: rgba(255, 255, 255, 0.1);
+    --background-start: #ffffff;
+    --background-end: #f8f9fa;
+    --card-bg: rgba(255, 255, 255, 0.9);
     --text-light: #ffffff;
-    --text-dark: #1a1a1a;
-    --glow-color: rgba(87, 122, 187, 0.5);
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --glow-color: rgba(43, 76, 126, 0.15);
 }
 
 /* Background Effect */
@@ -17,6 +20,7 @@ body {
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
+    color: var(--text-dark);
 }
 
 /* Particle Container */
@@ -43,7 +47,7 @@ body {
 
 .shape {
     position: absolute;
-    opacity: 0.1;
+    opacity: 0.03;
     animation: float 15s infinite linear;
 }
 
@@ -69,13 +73,14 @@ body {
 /* Company Header */
 .company-header {
     padding: 4rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--card-bg);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     margin-bottom: 3rem !important;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .company-header::before {
@@ -85,7 +90,7 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(circle, var(--glow-color) 0%, rgba(255,255,255,0) 70%);
     animation: rotate 20s linear infinite;
 }
 
@@ -95,18 +100,16 @@ body {
 }
 
 .company-header h1 {
-    color: var(--text-light);
+    color: var(--text-dark);
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     position: relative;
 }
 
 .company-header p {
-    color: var(--text-light);
+    color: var(--text-muted);
     font-size: 1.5rem;
-    opacity: 0.9;
     position: relative;
 }
 
@@ -116,6 +119,7 @@ body {
     display: inline-block;
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
+    color: var(--text-dark);
 }
 
 .section-title::after {
@@ -125,14 +129,14 @@ body {
     left: 0;
     width: 50%;
     height: 2px;
-    background: linear-gradient(90deg, var(--accent-color), transparent);
+    background: linear-gradient(90deg, var(--primary-color), transparent);
 }
 
 /* Cards */
 .card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
     perspective: 1000px;
@@ -140,7 +144,7 @@ body {
 
 .card:hover {
     transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3),
+    box-shadow: 0 15px 30px var(--shadow-color),
                 0 0 20px var(--glow-color);
 }
 
@@ -152,7 +156,7 @@ body {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                rgba(255,255,255,0.1) 0%, 
+                var(--glow-color) 0%, 
                 rgba(255,255,255,0) 50%);
     opacity: 0;
     transition: opacity 0.3s;
@@ -170,7 +174,7 @@ body {
 }
 
 .card-title {
-    color: var(--text-light);
+    color: var(--primary-color);
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
@@ -182,12 +186,11 @@ body {
 .card-icon {
     width: 2rem;
     height: 2rem;
-    fill: var(--accent-color);
+    fill: var(--primary-color);
 }
 
 .card-text {
-    color: var(--text-light);
-    opacity: 0.8;
+    color: var(--text-muted);
 }
 
 /* Buttons */
@@ -199,6 +202,7 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    color: var(--text-light);
 }
 
 .btn-primary::before {
@@ -215,7 +219,7 @@ body {
 .btn-primary:hover {
     background: var(--secondary-color);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3),
+    box-shadow: 0 5px 15px var(--shadow-color),
                 0 0 10px var(--glow-color);
 }
 
@@ -247,14 +251,21 @@ body {
 
 /* Coming Soon Section */
 .coming-soon .card {
-    opacity: 0.7;
-    filter: grayscale(0.5);
+    opacity: 0.8;
+    filter: grayscale(0.2);
     transform: none !important;
 }
 
 .coming-soon .card:hover {
-    opacity: 0.8;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    opacity: 0.9;
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.coming-soon .btn-secondary {
+    background: var(--text-muted);
+    border: none;
+    color: var(--text-light);
+    opacity: 0.7;
 }
 
 /* Loading Animation */
@@ -264,7 +275,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(255,255,255,0.9);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -282,9 +293,9 @@ body {
 .loader {
     width: 50px;
     height: 50px;
-    border: 3px solid var(--text-light);
+    border: 3px solid var(--text-muted);
     border-radius: 50%;
-    border-top-color: var(--accent-color);
+    border-top-color: var(--primary-color);
     animation: spin 1s infinite linear;
 }
 
@@ -295,6 +306,19 @@ body {
 /* Animation Enhancements */
 .animate__fadeInUp {
     animation-duration: 0.8s !important;
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 1000;
 }
 
 /* Responsive Adjustments */
@@ -314,17 +338,4 @@ body {
     .section-title {
         font-size: 1.8rem;
     }
-}
-
-/* Scroll Progress Indicator */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
-    transform-origin: 0 50%;
-    transform: scaleX(0);
-    z-index: 1000;
 }
