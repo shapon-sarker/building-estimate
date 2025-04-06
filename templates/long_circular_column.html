@@ -1,0 +1,653 @@
+{% extends "base.html" %}
+
+{% block title %}Long Circular Column Estimate{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-5">
+    <div class="row g-4">
+        <!-- Main Content Area -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">Long Circular Column Estimate</h2>
+                </div>
+                <div class="card-body">
+                    <form id="columnForm" class="needs-validation" novalidate>
+                        <!-- Column Input Section -->
+                        <div class="section mb-4">
+                            <h3 class="section-title">Column Details</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Description</th>
+                                            {% for i in range(1, 16) %}
+                                            <th>Type-{{ i }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Column Nos</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="column_nos[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Column Dia (mm)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="column_dia[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Clear Cover (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="clear_cover[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Height (ft)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="height[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- RCC Casting Ratio Section -->
+                        <div class="section mb-4">
+                            <h3 class="section-title">RCC Casting Ratio</h3>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">Type-1</label>
+                                    <input type="number" class="form-control" name="ratio_type1" step="any">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Type-2</label>
+                                    <input type="number" class="form-control" name="ratio_type2" step="any">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Type-3</label>
+                                    <input type="number" class="form-control" name="ratio_type3" step="any">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Total Ratio</label>
+                                    <input type="number" class="form-control" id="total_ratio" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column Rebar Calculation Section -->
+                        <div class="section mb-4">
+                            <h3 class="section-title">Column Rebar Calculation</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Description</th>
+                                            {% for i in range(1, 16) %}
+                                            <th>Type-{{ i }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Large Dia Section -->
+                                        <tr class="table-secondary">
+                                            <td colspan="16"><strong>Large Dia:</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rebar Size (mm)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="large_dia[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Rebar Nos</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="large_dia_nos[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Lapping (ft)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="large_dia_lapping[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- Small Dia Section -->
+                                        <tr class="table-secondary">
+                                            <td colspan="16"><strong>Small Dia:</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rebar Size (mm)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="small_dia[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Rebar Nos</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="small_dia_nos[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Lapping (ft)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="small_dia_lapping[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- Tie Rod Section -->
+                                        <tr class="table-secondary">
+                                            <td colspan="16"><strong>Tie Rod:</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rebar Size (mm)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="tie_rod_dia[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Spacing-1 (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="spacing1[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Spacing-2 (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="spacing2[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Hook Length (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="hook_length[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- Extra Tie-1 Section -->
+                                        <tr class="table-secondary">
+                                            <td colspan="16"><strong>Extra Tie-1:</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Length (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="extra_tie1_length[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Spacing (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="extra_tie1_spacing[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- Extra Tie-2 Section -->
+                                        <tr class="table-secondary">
+                                            <td colspan="16"><strong>Extra Tie-2:</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Length (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="extra_tie2_length[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                        <tr>
+                                            <td>Spacing (inch)</td>
+                                            {% for i in range(15) %}
+                                            <td>
+                                                <input type="number" class="form-control" name="extra_tie2_spacing[]" step="any">
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Rates and Wastage Section -->
+                        <div class="section mb-4">
+                            <h3 class="section-title">Rates and Wastage</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title mb-0">Material Rates (TK)</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Cement Rate</label>
+                                                    <input type="number" class="form-control" name="cement_rate" step="any">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Sand Rate</label>
+                                                    <input type="number" class="form-control" name="sand_rate" step="any">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Stone Rate</label>
+                                                    <input type="number" class="form-control" name="stone_rate" step="any">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Rebar Rate</label>
+                                                    <input type="number" class="form-control" name="rebar_rate" step="any">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Formwork Rate</label>
+                                                    <input type="number" class="form-control" name="formwork_rate" step="any">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Casting Rate</label>
+                                                    <input type="number" class="form-control" name="casting_rate" step="any">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title mb-0">Wastage (%)</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label">Wastage Percentage</label>
+                                                    <input type="number" class="form-control" name="wastage_percent" step="any">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <div class="text-center mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">Calculate</button>
+                        </div>
+                    </form>
+
+                    <!-- Results Section -->
+                    <div id="results" class="d-none">
+                        <h3 class="section-title">Results</h3>
+                        <div class="row g-4">
+                            <!-- Results-1: Long Circular Column Estimate And Price -->
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-success text-white">
+                                        <h4 class="card-title mb-0">Long Circular Column Estimate And Price</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Description</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit</th>
+                                                        <th>Rate (TK)</th>
+                                                        <th>Amount (TK)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="estimateResults">
+                                                    <!-- Results will be populated here -->
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="table-primary">
+                                                        <th colspan="4">Total Amount</th>
+                                                        <th id="totalAmount">0.00</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Results-2: Reinforcement -->
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-info text-white">
+                                        <h4 class="card-title mb-0">Reinforcement Details</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Size</th>
+                                                        <th>Rebar Quantity (KG)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="reinforcementResults">
+                                                    <!-- Results will be populated here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('columnForm');
+    const results = document.getElementById('results');
+    const estimateResults = document.getElementById('estimateResults');
+    const reinforcementResults = document.getElementById('reinforcementResults');
+    const totalAmount = document.getElementById('totalAmount');
+
+    // Update total ratio when ratio inputs change
+    const ratioInputs = ['ratio_type1', 'ratio_type2', 'ratio_type3'];
+    ratioInputs.forEach(inputName => {
+        document.querySelector(`[name="${inputName}"]`).addEventListener('input', updateTotalRatio);
+    });
+
+    function updateTotalRatio() {
+        const total = ratioInputs.reduce((sum, inputName) => {
+            const value = parseFloat(document.querySelector(`[name="${inputName}"]`).value) || 0;
+            return sum + value;
+        }, 0);
+        document.getElementById('total_ratio').value = total.toFixed(2);
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const formData = new FormData(form);
+        const data = {};
+        
+        // Process array inputs
+        const arrayInputs = [
+            'column_nos', 'column_dia', 'clear_cover', 'height',
+            'large_dia', 'large_dia_nos', 'large_dia_lapping',
+            'small_dia', 'small_dia_nos', 'small_dia_lapping',
+            'tie_rod_dia', 'spacing1', 'spacing2', 'hook_length',
+            'extra_tie1_length', 'extra_tie1_spacing',
+            'extra_tie2_length', 'extra_tie2_spacing'
+        ];
+
+        arrayInputs.forEach(name => {
+            data[name] = Array.from(formData.getAll(`${name}[]`));
+        });
+
+        // Process single inputs
+        ['ratio_type1', 'ratio_type2', 'ratio_type3',
+         'cement_rate', 'sand_rate', 'stone_rate',
+         'rebar_rate', 'formwork_rate', 'casting_rate',
+         'wastage_percent'
+        ].forEach(name => {
+            data[name] = formData.get(name);
+        });
+
+        try {
+            const response = await fetch('/calculate-long-circular-column', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            
+            // Display results
+            results.classList.remove('d-none');
+            
+            // Update estimate results
+            estimateResults.innerHTML = `
+                <tr>
+                    <td>Cement</td>
+                    <td>${result.cement_bags}</td>
+                    <td>Bag</td>
+                    <td>${data.cement_rate}</td>
+                    <td>${result.cement_cost}</td>
+                </tr>
+                <tr>
+                    <td>Sand</td>
+                    <td>${result.sand_cft}</td>
+                    <td>CFT</td>
+                    <td>${data.sand_rate}</td>
+                    <td>${result.sand_cost}</td>
+                </tr>
+                <tr>
+                    <td>Stone Chips</td>
+                    <td>${result.stone_chips_cft}</td>
+                    <td>CFT</td>
+                    <td>${data.stone_rate}</td>
+                    <td>${result.stone_cost}</td>
+                </tr>
+                <tr>
+                    <td>Rebar</td>
+                    <td>${result.rebar_kg}</td>
+                    <td>KG</td>
+                    <td>${data.rebar_rate}</td>
+                    <td>${result.rebar_cost}</td>
+                </tr>
+                <tr>
+                    <td>Formwork</td>
+                    <td>${result.formwork_sft}</td>
+                    <td>SFT</td>
+                    <td>${data.formwork_rate}</td>
+                    <td>${result.formwork_cost}</td>
+                </tr>
+                <tr>
+                    <td>Casting</td>
+                    <td>${result.casting_cft}</td>
+                    <td>CFT</td>
+                    <td>${data.casting_rate}</td>
+                    <td>${result.casting_cost}</td>
+                </tr>
+            `;
+
+            totalAmount.textContent = result.total_amount.toFixed(2);
+
+            // Update reinforcement results
+            if (result.rebar_breakdown) {
+                reinforcementResults.innerHTML = Object.entries(result.rebar_breakdown)
+                    .filter(([size, weight]) => weight > 0)
+                    .map(([size, weight]) => `
+                        <tr>
+                            <td>${size} mm</td>
+                            <td>${weight.toFixed(3)}</td>
+                        </tr>
+                    `).join('');
+            } else {
+                reinforcementResults.innerHTML = '<tr><td colspan="2">No reinforcement details available</td></tr>';
+            }
+
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while calculating. Please try again.');
+        }
+    });
+});
+</script>
+
+<style>
+.section-title {
+    color: #1a73e8;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+.form-control {
+    border-radius: 6px;
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    min-width: 80px; /* Ensure minimum width for better visibility */
+}
+
+.table td {
+    min-width: 100px; /* Ensure cells have enough width */
+    padding: 0.5rem;
+}
+
+.table td input.form-control {
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 0.2rem rgba(26,115,232,0.25);
+}
+
+.btn-primary {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1557b0;
+    border-color: #1557b0;
+    transform: translateY(-1px);
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    white-space: nowrap; /* Prevent header text from wrapping */
+}
+
+.table-responsive {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#results {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.form-control {
+    transition: all 0.3s ease;
+}
+
+.form-control:hover {
+    border-color: #1a73e8;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1a73e8;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1557b0;
+}
+
+/* Table header sticky positioning */
+.table-responsive {
+    max-height: none;
+    overflow-x: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table td input.form-control {
+        min-width: 120px;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+</style>
+{% endblock %} 

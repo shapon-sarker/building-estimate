@@ -523,6 +523,237 @@ def calculate_slab_estimates(slab_data, ratio_data, rebar_data, rates_and_wastag
         'rebar_breakdown': rebar_breakdown
     }
 
+@app.route('/long-circular-column')
+def long_circular_column():
+    return render_template('long_circular_column.html')
+
+@app.route('/calculate-long-circular-column', methods=['POST'])
+def calculate_long_circular_column():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        # Extract values from the request
+        column_data = {
+            'nos': [float(x) if x and x != 'null' else 0 for x in data.get('column_nos', [0]*15)],
+            'dia': [float(x) if x and x != 'null' else 0 for x in data.get('column_dia', [0]*15)],
+            'clear_cover': [float(x) if x and x != 'null' else 0 for x in data.get('clear_cover', [0]*15)],
+            'height': [float(x) if x and x != 'null' else 0 for x in data.get('height', [0]*15)]
+        }
+        
+        rcc_ratio = {
+            'type1': float(data.get('ratio_type1', 0) or 0),
+            'type2': float(data.get('ratio_type2', 0) or 0),
+            'type3': float(data.get('ratio_type3', 0) or 0)
+        }
+        
+        rebar_data = {
+            'large_dia': [float(x) if x and x != 'null' else 0 for x in data.get('large_dia', [0]*15)],
+            'large_dia_nos': [float(x) if x and x != 'null' else 0 for x in data.get('large_dia_nos', [0]*15)],
+            'large_dia_lapping': [float(x) if x and x != 'null' else 0 for x in data.get('large_dia_lapping', [0]*15)],
+            'small_dia': [float(x) if x and x != 'null' else 0 for x in data.get('small_dia', [0]*15)],
+            'small_dia_nos': [float(x) if x and x != 'null' else 0 for x in data.get('small_dia_nos', [0]*15)],
+            'small_dia_lapping': [float(x) if x and x != 'null' else 0 for x in data.get('small_dia_lapping', [0]*15)],
+            'tie_rod_dia': [float(x) if x and x != 'null' else 0 for x in data.get('tie_rod_dia', [0]*15)],
+            'spacing1': [float(x) if x and x != 'null' else 0 for x in data.get('spacing1', [0]*15)],
+            'spacing2': [float(x) if x and x != 'null' else 0 for x in data.get('spacing2', [0]*15)],
+            'hook_length': [float(x) if x and x != 'null' else 0 for x in data.get('hook_length', [0]*15)],
+            'extra_tie1_length': [float(x) if x and x != 'null' else 0 for x in data.get('extra_tie1_length', [0]*15)],
+            'extra_tie1_spacing': [float(x) if x and x != 'null' else 0 for x in data.get('extra_tie1_spacing', [0]*15)],
+            'extra_tie2_length': [float(x) if x and x != 'null' else 0 for x in data.get('extra_tie2_length', [0]*15)],
+            'extra_tie2_spacing': [float(x) if x and x != 'null' else 0 for x in data.get('extra_tie2_spacing', [0]*15)]
+        }
+
+        rates_and_wastage = {
+            'cement_rate': float(data.get('cement_rate', 0) or 0),
+            'sand_rate': float(data.get('sand_rate', 0) or 0),
+            'stone_rate': float(data.get('stone_rate', 0) or 0),
+            'rebar_rate': float(data.get('rebar_rate', 0) or 0),
+            'formwork_rate': float(data.get('formwork_rate', 0) or 0),
+            'casting_rate': float(data.get('casting_rate', 0) or 0),
+            'wastage_percent': float(data.get('wastage_percent', 0) or 0)
+        }
+
+        # Calculate results
+        results = calculate_long_circular_column_estimates(column_data, rcc_ratio, rebar_data, rates_and_wastage)
+        return jsonify(results)
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({'error': str(e)}), 500
+
+def calculate_long_circular_column_estimates(column_data, rcc_ratio, rebar_data, rates_and_wastage):
+    total_rcc_casting = 0
+    total_cement = 0
+    total_sand = 0
+    total_stone = 0
+    total_rebar = 0
+    total_formwork = 0
+    
+    # Calculate total ratio
+    total_ratio = rcc_ratio['type1'] + rcc_ratio['type2'] + rcc_ratio['type3']
+    
+    # Process each column
+    for i in range(15):  # For each type (1-15)
+        if column_data['nos'][i] > 0:  # Only calculate if number of columns > 0
+            # Basic column calculations
+            column_height = column_data['height'][i]  # Height in ft
+            column_dia = column_data['dia'][i]  # Diameter in mm
+            clear_cover = column_data['clear_cover'][i]  # Clear cover in inches
+            num_columns = column_data['nos'][i]
+
+            # Calculate RCC volume
+            rcc_volume = (math.pi * ((column_dia/12)**2) / 4) * column_height * num_columns
+            total_rcc_casting += rcc_volume
+
+            # Calculate formwork area
+            formwork_area = math.pi * (column_dia/12) * column_height * num_columns
+            total_formwork += formwork_area
+
+            # Calculate rebar quantities
+            if rebar_data['large_dia'][i] > 0:
+                # Main rebar calculation
+                main_rebar_length = column_height + rebar_data['large_dia_lapping'][i]
+                main_rebar_weight = ((rebar_data['large_dia'][i]**2) / 532) * rebar_data['large_dia_nos'][i] * main_rebar_length * num_columns
+                total_rebar += main_rebar_weight
+
+            if rebar_data['small_dia'][i] > 0:
+                # Secondary rebar calculation
+                small_rebar_length = column_height + rebar_data['small_dia_lapping'][i]
+                small_rebar_weight = ((rebar_data['small_dia'][i]**2) / 532) * rebar_data['small_dia_nos'][i] * small_rebar_length * num_columns
+                total_rebar += small_rebar_weight
+
+            if rebar_data['tie_rod_dia'][i] > 0:
+                # Tie rod calculations
+                tie_perimeter = math.pi * (column_dia - clear_cover - clear_cover + rebar_data['hook_length'][i] + rebar_data['hook_length'][i]) / 12
+                avg_spacing = (rebar_data['spacing1'][i] + rebar_data['spacing2'][i]) / 2
+                num_ties = (column_height * 12) / avg_spacing if avg_spacing > 0 else 0
+                tie_weight = ((rebar_data['tie_rod_dia'][i]**2) / 532) * tie_perimeter * num_ties * num_columns
+                total_rebar += tie_weight
+
+                # Extra ties calculations
+                if rebar_data['extra_tie1_spacing'][i] > 0:
+                    extra_tie1_length = rebar_data['extra_tie1_length'][i]
+                    num_extra_ties1 = (column_height * 12) / rebar_data['extra_tie1_spacing'][i]
+                    extra_tie1_weight = ((rebar_data['tie_rod_dia'][i]**2) / 532) * extra_tie1_length * num_extra_ties1 * num_columns
+                    total_rebar += extra_tie1_weight
+
+                if rebar_data['extra_tie2_spacing'][i] > 0:
+                    extra_tie2_length = rebar_data['extra_tie2_length'][i]
+                    num_extra_ties2 = (column_height * 12) / rebar_data['extra_tie2_spacing'][i]
+                    extra_tie2_weight = ((rebar_data['tie_rod_dia'][i]**2) / 532) * extra_tie2_length * num_extra_ties2 * num_columns
+                    total_rebar += extra_tie2_weight
+
+    # Calculate material quantities based on ratio
+    if total_ratio > 0:
+        total_cement = (total_rcc_casting * rcc_ratio['type1'] * 1.54) / (total_ratio * 1.25)
+        total_sand = (total_rcc_casting * rcc_ratio['type2'] * 1.54) / total_ratio
+        total_stone = (total_rcc_casting * rcc_ratio['type3'] * 1.54) / total_ratio
+
+    # Apply wastage
+    wastage_multiplier = 1 + rates_and_wastage['wastage_percent'] / 100
+    cement_with_wastage = total_cement * wastage_multiplier
+    sand_with_wastage = total_sand * wastage_multiplier
+    stone_with_wastage = total_stone * wastage_multiplier
+    rebar_with_wastage = total_rebar * wastage_multiplier
+    formwork_with_wastage = total_formwork * wastage_multiplier
+    casting_with_wastage = total_rcc_casting * wastage_multiplier
+
+    # Calculate costs
+    cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
+    sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
+    stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert to tons for cost
+    formwork_cost = formwork_with_wastage * rates_and_wastage['formwork_rate']
+    casting_cost = casting_with_wastage * rates_and_wastage['casting_rate']
+
+    # Calculate total cost
+    total_cost = cement_cost + sand_cost + stone_cost + rebar_cost + formwork_cost + casting_cost
+
+    # Prepare results
+    results = {
+        'cement_bags': round(cement_with_wastage, 2),
+        'sand_cft': round(sand_with_wastage, 2),
+        'stone_chips_cft': round(stone_with_wastage, 2),
+        'rebar_kg': round(rebar_with_wastage, 3),
+        'formwork_sft': round(formwork_with_wastage, 2),
+        'casting_cft': round(casting_with_wastage, 2),
+        'cement_cost': round(cement_cost, 2),
+        'sand_cost': round(sand_cost, 2),
+        'stone_cost': round(stone_cost, 2),
+        'rebar_cost': round(rebar_cost, 2),
+        'formwork_cost': round(formwork_cost, 2),
+        'casting_cost': round(casting_cost, 2),
+        'total_amount': round(total_cost, 2),
+        'rebar_breakdown': calculate_reinforcement_details(rebar_data, column_data, rates_and_wastage['wastage_percent'])
+    }
+
+    return results
+
+def calculate_reinforcement_details(rebar_data, column_data, wastage_percent):
+    # Initialize dictionary to store rebar quantities by size
+    rebar_by_size = {
+        8: 0,   # 8 MM
+        10: 0,  # 10 MM
+        12: 0,  # 12 MM
+        16: 0,  # 16 MM
+        20: 0,  # 20 MM
+        25: 0,  # 25 MM
+        28: 0,  # 28 MM
+        32: 0   # 32 MM
+    }
+
+    # Process each column type
+    for i in range(15):
+        if column_data['nos'][i] > 0:
+            # Process large diameter bars
+            if rebar_data['large_dia'][i] > 0:
+                size = rebar_data['large_dia'][i]
+                if size in rebar_by_size:
+                    length = column_data['height'][i] + rebar_data['large_dia_lapping'][i]
+                    weight = ((size**2) / 532) * rebar_data['large_dia_nos'][i] * length * column_data['nos'][i]
+                    rebar_by_size[size] += weight
+
+            # Process small diameter bars
+            if rebar_data['small_dia'][i] > 0:
+                size = rebar_data['small_dia'][i]
+                if size in rebar_by_size:
+                    length = column_data['height'][i] + rebar_data['small_dia_lapping'][i]
+                    weight = ((size**2) / 532) * rebar_data['small_dia_nos'][i] * length * column_data['nos'][i]
+                    rebar_by_size[size] += weight
+
+            # Process tie rods
+            if rebar_data['tie_rod_dia'][i] > 0:
+                size = rebar_data['tie_rod_dia'][i]
+                if size in rebar_by_size:
+                    # Main ties
+                    tie_length = math.pi * (column_data['dia'][i] - column_data['clear_cover'][i] * 2 + 
+                               rebar_data['hook_length'][i] * 2) / 12
+                    avg_spacing = (rebar_data['spacing1'][i] + rebar_data['spacing2'][i]) / 2
+                    if avg_spacing > 0:
+                        num_ties = (column_data['height'][i] * 12) / avg_spacing
+                        weight = ((size**2) / 532) * tie_length * num_ties * column_data['nos'][i]
+                        rebar_by_size[size] += weight
+
+                    # Extra ties 1
+                    if rebar_data['extra_tie1_spacing'][i] > 0:
+                        num_extra_ties1 = (column_data['height'][i] * 12) / rebar_data['extra_tie1_spacing'][i]
+                        weight = ((size**2) / 532) * rebar_data['extra_tie1_length'][i] * num_extra_ties1 * column_data['nos'][i]
+                        rebar_by_size[size] += weight
+
+                    # Extra ties 2
+                    if rebar_data['extra_tie2_spacing'][i] > 0:
+                        num_extra_ties2 = (column_data['height'][i] * 12) / rebar_data['extra_tie2_spacing'][i]
+                        weight = ((size**2) / 532) * rebar_data['extra_tie2_length'][i] * num_extra_ties2 * column_data['nos'][i]
+                        rebar_by_size[size] += weight
+
+    # Apply wastage to all rebar quantities
+    for size in rebar_by_size:
+        if rebar_by_size[size] > 0:
+            rebar_by_size[size] = round(rebar_by_size[size] * (1 + wastage_percent / 100), 2)
+
+    return rebar_by_size
+
 # Make sure there are no spaces or tabs before this line
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))

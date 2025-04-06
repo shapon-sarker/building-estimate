@@ -40,6 +40,19 @@
             </div>
         </div>
 
+        <!-- Long Circular Column Card -->
+        <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+            <div class="card w-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Long Circular Column</h3>
+                    <p class="card-text">Calculate reinforcement and material requirements for long circular columns.</p>
+                    <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary">
+                        Calculate Long Circular Column
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- Slab Estimate Card -->
         <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
             <div class="card w-100 shadow-sm">
@@ -60,7 +73,6 @@
     
     <!-- Coming Soon Options -->
     {% set options = [
-        ('Long Circular Column', 'Estimate materials and costs for circular columns with detailed reinforcement.'),
         ('Short Tied Column', 'Compute estimates for short tied columns with proper reinforcement details.'),
         ('Short Circular Column', 'Compute estimates for short circular columns with ties.'),
         ('Grade Beam', 'Calculate materials and reinforcement for grade beams with accurate measurements.'),
