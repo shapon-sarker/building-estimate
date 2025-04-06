@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short Circular Column Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/short-circular-column.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Short Circular Column Calculator</h1>
+            <a href="/" class="back-button">Back to Home</a>
+        </header>
+
+        <form id="calculatorForm" class="calculator-form">
+            <!-- Column Details Section -->
+            <div class="card">
+                <h2>Column Details</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Column Nos</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="column_nos[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Column Dia (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="column_dia[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Clear Cover (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="clear_cover[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Short Column Height, H (ft)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="height[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RCC Casting Ratio Section -->
+            <div class="card">
+                <h2>RCC Casting Ratio</h2>
+                <div class="ratio-inputs">
+                    <div class="input-group">
+                        <label for="type1">Type-1:</label>
+                        <input type="number" id="type1" name="type1" step="any">
+                    </div>
+                    <div class="input-group">
+                        <label for="type2">Type-2:</label>
+                        <input type="number" id="type2" name="type2" step="any">
+                    </div>
+                    <div class="input-group">
+                        <label for="type3">Type-3:</label>
+                        <input type="number" id="type3" name="type3" step="any">
+                    </div>
+                    <div class="input-group total-ratio">
+                        <label>Total Ratio:</label>
+                        <span id="totalRatio">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Short Column Rebar Calculation Section -->
+            <div class="card">
+                <h2>Short Column Rebar Calculation</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="16"><strong>Large Dia:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="large_dia_size[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Rebar Nos</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="large_dia_nos[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td colspan="16"><strong>Small Dia:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="small_dia_size[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Rebar Nos</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="small_dia_nos[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Development length (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="dev_length[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td colspan="16"><strong>Spiral Ring:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="spiral_dia[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spacing (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="spiral_spacing[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Hook length (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="hook_length[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spiral Ring-1 length (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="spiral_length1[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spiral Ring-2 length (inch)</td>
+                                {% for i in range(15) %}
+                                <td><input type="number" name="spiral_length2[]" step="any"></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Material Rates and Wastage Section -->
+            <div class="card">
+                <h2>Material Rates and Wastage</h2>
+                <div class="rates-section">
+                    <div class="rates-grid">
+                        <div class="input-group">
+                            <label for="cement_rate">Cement Rate (TK/Bag):</label>
+                            <input type="number" id="cement_rate" name="cement_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="sand_rate">Sand Rate (TK/CFT):</label>
+                            <input type="number" id="sand_rate" name="sand_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="stone_rate">Stone Rate (TK/CFT):</label>
+                            <input type="number" id="stone_rate" name="stone_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="brick_rate">Brick Rate (TK/Nos):</label>
+                            <input type="number" id="brick_rate" name="brick_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="rebar_rate">Rebar Rate (TK/Ton):</label>
+                            <input type="number" id="rebar_rate" name="rebar_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="formwork_rate">Formwork Rate (TK/SFT):</label>
+                            <input type="number" id="formwork_rate" name="formwork_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="casting_rate">Casting Rate (TK/CFT):</label>
+                            <input type="number" id="casting_rate" name="casting_rate" step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="material_wastage">Material Wastage (%):</label>
+                            <input type="number" id="material_wastage" name="material_wastage" step="any">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="calculate-btn">Calculate</button>
+                <button type="reset" class="reset-btn">Reset</button>
+                <button type="button" class="print-btn" onclick="window.print()">Print</button>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        <div id="results" class="results-section" style="display: none;">
+            <div class="card materials-summary">
+                <h2>Materials Summary</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Wastage (%)</th>
+                                <th>Total Quantity</th>
+                                <th>Rate (Tk)</th>
+                                <th>Amount (Tk)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materialsTableBody">
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="5" style="text-align: right;"><strong>Total Amount:</strong></td>
+                                <td><strong id="totalAmount">0.00</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card reinforcement-details">
+                <h2>Reinforcement Details</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Bar Size</th>
+                                <th>Weight (Ton)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reinforcementTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/short-circular-column.js') }}"></script>
+    </div>
+</body>
+</html> 

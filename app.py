@@ -162,7 +162,7 @@ def calculate_pile_estimates(pile_data, ratio_data, rebar_data, rates_and_wastag
     cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
     sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
     stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
-    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert to tons only for cost calculation
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert kg to tons before multiplying by rate
     
     # Calculate total cost
     total_cost = cement_cost + sand_cost + stone_cost + rebar_cost
@@ -311,7 +311,7 @@ def calculate_long_tied_column_estimates(column_data, rcc_ratio, rebar_data, rat
     cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
     sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
     stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
-    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert to tons only for cost calculation
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert kg to tons before multiplying by rate
     formwork_cost = total_formwork * rates_and_wastage['formwork_rate']
     casting_cost = total_rcc_casting * rates_and_wastage['casting_rate']
 
@@ -493,7 +493,7 @@ def calculate_slab_estimates(slab_data, ratio_data, rebar_data, rates_and_wastag
     cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
     sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
     stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
-    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert to tons for cost
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert kg to tons before multiplying by rate
     formwork_cost = total_formwork * rates_and_wastage['formwork_rate']
     casting_cost = total_rcc_casting * rates_and_wastage['casting_rate']
 
@@ -663,7 +663,7 @@ def calculate_long_circular_column_estimates(column_data, rcc_ratio, rebar_data,
     cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
     sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
     stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
-    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert to tons for cost
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert kg to tons before multiplying by rate
     formwork_cost = formwork_with_wastage * rates_and_wastage['formwork_rate']
     casting_cost = casting_with_wastage * rates_and_wastage['casting_rate']
 
@@ -927,6 +927,224 @@ def calculate_short_tied_column():
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/short-circular-column')
+def short_circular_column():
+    return render_template('short_circular_column.html')
+
+@app.route('/calculate-short-circular-column', methods=['POST'])
+def calculate_short_circular_column():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        # Extract values from the request
+        column_data = {
+            'nos': [float(x) if x and x != 'null' else 0 for x in data.get('column_nos', [0]*15)],
+            'dia': [float(x) if x and x != 'null' else 0 for x in data.get('column_dia', [0]*15)],
+            'clear_cover': [float(x) if x and x != 'null' else 0 for x in data.get('clear_cover', [0]*15)],
+            'height': [float(x) if x and x != 'null' else 0 for x in data.get('height', [0]*15)]
+        }
+        
+        rcc_ratio = {
+            'type1': float(data.get('type1', 0) or 0),
+            'type2': float(data.get('type2', 0) or 0),
+            'type3': float(data.get('type3', 0) or 0)
+        }
+        
+        rebar_data = {
+            'large_dia_size': [float(x) if x and x != 'null' else 0 for x in data.get('large_dia_size', [0]*15)],
+            'large_dia_nos': [float(x) if x and x != 'null' else 0 for x in data.get('large_dia_nos', [0]*15)],
+            'small_dia_size': [float(x) if x and x != 'null' else 0 for x in data.get('small_dia_size', [0]*15)],
+            'small_dia_nos': [float(x) if x and x != 'null' else 0 for x in data.get('small_dia_nos', [0]*15)],
+            'dev_length': [float(x) if x and x != 'null' else 0 for x in data.get('dev_length', [0]*15)],
+            'spiral_dia': [float(x) if x and x != 'null' else 0 for x in data.get('spiral_dia', [0]*15)],
+            'spiral_spacing': [float(x) if x and x != 'null' else 0 for x in data.get('spiral_spacing', [0]*15)],
+            'hook_length': [float(x) if x and x != 'null' else 0 for x in data.get('hook_length', [0]*15)],
+            'spiral_length1': [float(x) if x and x != 'null' else 0 for x in data.get('spiral_length1', [0]*15)],
+            'spiral_length2': [float(x) if x and x != 'null' else 0 for x in data.get('spiral_length2', [0]*15)]
+        }
+
+        rates_and_wastage = {
+            'cement_rate': float(data.get('cement_rate', 0) or 0),
+            'sand_rate': float(data.get('sand_rate', 0) or 0),
+            'stone_rate': float(data.get('stone_rate', 0) or 0),
+            'brick_rate': float(data.get('brick_rate', 0) or 0),
+            'rebar_rate': float(data.get('rebar_rate', 0) or 0),
+            'formwork_rate': float(data.get('formwork_rate', 0) or 0),
+            'casting_rate': float(data.get('casting_rate', 0) or 0),
+            'material_wastage': float(data.get('material_wastage', 0) or 0)
+        }
+        
+        # Calculate results
+        results = calculate_short_circular_column_estimates(column_data, rcc_ratio, rebar_data, rates_and_wastage)
+        return jsonify(results)
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({'error': str(e)}), 500
+
+def calculate_short_circular_column_estimates(column_data, rcc_ratio, rebar_data, rates_and_wastage):
+    # Initialize totals
+    total_cement = 0
+    total_sand = 0
+    total_stone = 0
+    total_brick = 0
+    total_rebar = 0  # This is in kg
+    total_formwork = 0
+    total_casting = 0
+    rebar_by_size = {
+        8: 0, 10: 0, 12: 0, 16: 0, 20: 0, 25: 0, 28: 0, 32: 0  # Values will be in kg
+    }
+
+    # Calculate total ratio
+    total_ratio = rcc_ratio['type1'] + rcc_ratio['type2'] + rcc_ratio['type3']
+    
+    # Process each column
+    for i in range(15):
+        if column_data['nos'][i] > 0:
+            # Calculate column volume
+            dia_ft = column_data['dia'][i] / 12  # Convert inches to feet
+            volume = (math.pi * (dia_ft ** 2) / 4) * column_data['height'][i] * column_data['nos'][i]
+            
+            # Calculate materials based on ratio
+            if total_ratio > 0:
+                cement = (volume * rcc_ratio['type1'] * 1.54) / (total_ratio * 1.25)
+                sand = (volume * rcc_ratio['type2'] * 1.54) / total_ratio
+                stone = (volume * rcc_ratio['type3'] * 1.54) / total_ratio
+                brick = stone * 9.5  # Convert stone to brick if needed
+                
+                total_cement += cement
+                total_sand += sand
+                total_stone += stone
+                total_brick += brick
+            
+            # Calculate formwork
+            formwork = column_data['height'][i] * math.pi * (column_data['dia'][i] / 12) * column_data['nos'][i]
+            total_formwork += formwork
+            
+            # Calculate casting volume
+            total_casting += volume
+            
+            # Calculate rebar weights
+            if rebar_data['large_dia_size'][i] > 0:
+                length = column_data['height'][i] + rebar_data['dev_length'][i]
+                weight = ((rebar_data['large_dia_size'][i] ** 2) / 532) * rebar_data['large_dia_nos'][i] * length * column_data['nos'][i]
+                rebar_size = int(rebar_data['large_dia_size'][i])
+                if rebar_size in rebar_by_size:
+                    rebar_by_size[rebar_size] += weight
+                total_rebar += weight
+            
+            if rebar_data['small_dia_size'][i] > 0:
+                length = column_data['height'][i] + rebar_data['dev_length'][i]
+                weight = ((rebar_data['small_dia_size'][i] ** 2) / 532) * rebar_data['small_dia_nos'][i] * length * column_data['nos'][i]
+                rebar_size = int(rebar_data['small_dia_size'][i])
+                if rebar_size in rebar_by_size:
+                    rebar_by_size[rebar_size] += weight
+                total_rebar += weight
+            
+            if rebar_data['spiral_dia'][i] > 0:
+                # Calculate spiral rebar weight
+                perimeter = math.pi * (column_data['dia'][i] - 2 * column_data['clear_cover'][i]) / 12
+                turns = (column_data['height'][i] / (rebar_data['spiral_spacing'][i] / 12)) + 1
+                spiral_length = (perimeter * turns) + rebar_data['hook_length'][i]
+                weight = ((rebar_data['spiral_dia'][i] ** 2) / 532) * spiral_length * column_data['nos'][i]
+                
+                # Add weights for additional spiral lengths
+                if rebar_data['spiral_length1'][i] > 0:
+                    weight1 = ((rebar_data['spiral_dia'][i] ** 2) / 532) * rebar_data['spiral_length1'][i] * column_data['nos'][i]
+                    weight += weight1
+                
+                if rebar_data['spiral_length2'][i] > 0:
+                    weight2 = ((rebar_data['spiral_dia'][i] ** 2) / 532) * rebar_data['spiral_length2'][i] * column_data['nos'][i]
+                    weight += weight2
+                
+                rebar_size = int(rebar_data['spiral_dia'][i])
+                if rebar_size in rebar_by_size:
+                    rebar_by_size[rebar_size] += weight
+                total_rebar += weight
+
+    # Apply wastage
+    wastage = rates_and_wastage['material_wastage'] / 100
+    cement_with_wastage = total_cement * (1 + wastage)
+    sand_with_wastage = total_sand * (1 + wastage)
+    stone_with_wastage = total_stone * (1 + wastage)
+    brick_with_wastage = total_brick * (1 + wastage)
+    rebar_with_wastage = total_rebar * (1 + wastage)
+    formwork_with_wastage = total_formwork * (1 + wastage)
+    casting_with_wastage = total_casting * (1 + wastage)
+
+    # Calculate costs
+    cement_cost = cement_with_wastage * rates_and_wastage['cement_rate']
+    sand_cost = sand_with_wastage * rates_and_wastage['sand_rate']
+    stone_cost = stone_with_wastage * rates_and_wastage['stone_rate']
+    brick_cost = brick_with_wastage * rates_and_wastage['brick_rate']
+    rebar_cost = (rebar_with_wastage / 1000) * rates_and_wastage['rebar_rate']  # Convert kg to tons before multiplying by rate
+    formwork_cost = formwork_with_wastage * rates_and_wastage['formwork_rate']
+    casting_cost = casting_with_wastage * rates_and_wastage['casting_rate']
+
+    # Clean up rebar_by_size to only include non-zero values
+    rebar_quantities = {str(size): round(quantity, 3) for size, quantity in rebar_by_size.items() if quantity > 0}  # Keep in kg
+
+    # Prepare results
+    results = {
+        'materials': {
+            'material_wastage': rates_and_wastage['material_wastage'],
+            'cement': {
+                'quantity': round(total_cement, 2),
+                'wastage_quantity': round(cement_with_wastage, 2),
+                'unit': 'Bag',
+                'rate': rates_and_wastage['cement_rate'],
+                'amount': round(cement_cost, 2)
+            },
+            'sand': {
+                'quantity': round(total_sand, 2),
+                'wastage_quantity': round(sand_with_wastage, 2),
+                'unit': 'CFT',
+                'rate': rates_and_wastage['sand_rate'],
+                'amount': round(sand_cost, 2)
+            },
+            'stone': {
+                'quantity': round(total_stone, 2),
+                'wastage_quantity': round(stone_with_wastage, 2),
+                'unit': 'CFT',
+                'rate': rates_and_wastage['stone_rate'],
+                'amount': round(stone_cost, 2)
+            },
+            'brick': {
+                'quantity': round(total_brick, 2),
+                'wastage_quantity': round(brick_with_wastage, 2),
+                'unit': 'Nos',
+                'rate': rates_and_wastage['brick_rate'],
+                'amount': round(brick_cost, 2)
+            },
+            'rebar': {
+                'quantity': round(total_rebar / 1000, 3),  # Convert to tons
+                'wastage_quantity': round(rebar_with_wastage / 1000, 3),  # Convert to tons
+                'unit': 'Ton',
+                'rate': rates_and_wastage['rebar_rate'],
+                'amount': round(rebar_cost, 2)
+            },
+            'formwork': {
+                'quantity': round(total_formwork, 2),
+                'wastage_quantity': round(formwork_with_wastage, 2),
+                'unit': 'SFT',
+                'rate': rates_and_wastage['formwork_rate'],
+                'amount': round(formwork_cost, 2)
+            },
+            'casting': {
+                'quantity': round(total_casting, 2),
+                'wastage_quantity': round(casting_with_wastage, 2),
+                'unit': 'CFT',
+                'rate': rates_and_wastage['casting_rate'],
+                'amount': round(casting_cost, 2)
+            }
+        },
+        'total_amount': round(cement_cost + sand_cost + stone_cost + brick_cost + rebar_cost + formwork_cost + casting_cost, 2),
+        'rebar_details': rebar_quantities  # Values in kg
+    }
+
+    return results
 
 # Make sure there are no spaces or tabs before this line
 if __name__ == '__main__':
