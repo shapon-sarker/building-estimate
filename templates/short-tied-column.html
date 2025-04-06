@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+{% block title %}Short Tied Column{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/short-tied-column.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-5">
+    <div class="page-header mb-4">
+        <h2 class="text-center">Short Tied Column</h2>
+        <p class="text-center text-muted">Calculate material quantities and costs for short tied columns</p>
+    </div>
+
+    <form id="calculatorForm" class="needs-validation" novalidate>
+        <!-- Column Details Section -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Column Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Column Nos</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_column_nos" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Length, L (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_length" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Breadth, B (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_breadth" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Clear Cover (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_clear_cover" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Short Column Height, H (ft)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_height" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RCC Casting Ratio Section -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">RCC Casting Ratio</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Type-1</label>
+                        <input type="number" class="form-control" name="rcc_ratio_type_1" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type-2</label>
+                        <input type="number" class="form-control" name="rcc_ratio_type_2" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type-3</label>
+                        <input type="number" class="form-control" name="rcc_ratio_type_3" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Total Ratio</label>
+                        <input type="number" class="form-control" id="total_ratio" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Short Column Rebar Calculation Section -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Short Column Rebar Calculation</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                {% for i in range(1, 16) %}
+                                <th>Type-{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Large Dia -->
+                            <tr>
+                                <td colspan="16"><strong>Large Dia:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_large_dia_size" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Rebar Nos</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_large_dia_nos" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Small Dia -->
+                            <tr>
+                                <td colspan="16"><strong>Small Dia:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_small_dia_size" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Rebar Nos</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_small_dia_nos" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Development Length -->
+                            <tr>
+                                <td>Development Length (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_development_length" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Tie Rod -->
+                            <tr>
+                                <td colspan="16"><strong>Tie Rod:</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Rebar Size (mm)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_tie_rod_size" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Spacing (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_tie_spacing" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Hook Length (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_hook_length" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <!-- Extra Ties -->
+                            <tr>
+                                <td>Extra Tie-1 Length (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_extra_tie_1" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Extra Tie-2 Length (inch)</td>
+                                {% for i in range(1, 16) %}
+                                <td>
+                                    <input type="number" class="form-control" name="type_{{ i }}_extra_tie_2" step="any">
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rates and Wastage Section -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Rates and Wastage</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Wastage (%)</label>
+                        <input type="number" class="form-control" name="wastage_percent" value="0" step="any">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Material Type</label>
+                        <select class="form-select" name="material_type">
+                            <option value="stone">Stone/Brick Chips (CFT)</option>
+                            <option value="brick">Brick Nos</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                        <label class="form-label">Cement Rate (TK)</label>
+                        <input type="number" class="form-control" name="cement_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Sand Rate (TK)</label>
+                        <input type="number" class="form-control" name="sand_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Aggregate Rate (TK)</label>
+                        <input type="number" class="form-control" name="aggregate_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Brick Rate (TK)</label>
+                        <input type="number" class="form-control" name="brick_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Rebar Rate (TK)</label>
+                        <input type="number" class="form-control" name="rebar_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Formwork Rate (TK)</label>
+                        <input type="number" class="form-control" name="formwork_rate" value="0" step="any">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Casting Rate (TK)</label>
+                        <input type="number" class="form-control" name="casting_rate" value="0" step="any">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Calculate</button>
+            <button type="reset" class="btn btn-secondary btn-lg px-4">Reset</button>
+        </div>
+    </form>
+
+    <!-- Results Section -->
+    <div id="results" style="display: none;">
+        <!-- Results-1: Short Tied Column Estimate And Price -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Short Tied Column Estimate And Price</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Wastage Material (%)</th>
+                                <th>Total Quantity (Wastage Add)</th>
+                                <th>Rate</th>
+                                <th>Amount (TK)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cement (Bag)</td>
+                                <td id="cement_qty">0</td>
+                                <td rowspan="7" id="wastage_percent_display">0</td>
+                                <td id="cement_total">0</td>
+                                <td id="cement_rate">0</td>
+                                <td id="cement_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td>Sand (CFT)</td>
+                                <td id="sand_qty">0</td>
+                                <td id="sand_total">0</td>
+                                <td id="sand_rate">0</td>
+                                <td id="sand_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td id="aggregate_label">Stone/Brick Chips (CFT)</td>
+                                <td id="aggregate_qty">0</td>
+                                <td id="aggregate_total">0</td>
+                                <td id="aggregate_rate">0</td>
+                                <td id="aggregate_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td>Rebar (Ton)</td>
+                                <td id="rebar_qty">0</td>
+                                <td id="rebar_total">0</td>
+                                <td id="rebar_rate">0</td>
+                                <td id="rebar_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td>Formwork (SFT)</td>
+                                <td id="formwork_qty">0</td>
+                                <td id="formwork_total">0</td>
+                                <td id="formwork_rate">0</td>
+                                <td id="formwork_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td>Casting (CFT)</td>
+                                <td id="casting_qty">0</td>
+                                <td id="casting_total">0</td>
+                                <td id="casting_rate">0</td>
+                                <td id="casting_amount">0</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td><strong>Total:</strong></td>
+                                <td id="total_amount">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results-2: Reinforcement -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Reinforcement</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Reinforcement Size</th>
+                                <th>Rebar Quantity (Ton)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>8 MM</td>
+                                <td id="rebar_8mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>10 MM</td>
+                                <td id="rebar_10mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>12 MM</td>
+                                <td id="rebar_12mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>16 MM</td>
+                                <td id="rebar_16mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>20 MM</td>
+                                <td id="rebar_20mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>25 MM</td>
+                                <td id="rebar_25mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>28 MM</td>
+                                <td id="rebar_28mm">0</td>
+                            </tr>
+                            <tr>
+                                <td>32 MM</td>
+                                <td id="rebar_32mm">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/short-tied-column.js') }}"></script>
+{% endblock %} 

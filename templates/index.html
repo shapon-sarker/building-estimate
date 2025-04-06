@@ -44,68 +44,65 @@
     <!-- Active Calculators Section -->
     <div class="active-calculators mb-5">
         <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Active Calculators</h2>
-        <div class="row g-4 py-3 row-cols-1 row-cols-lg-3">
-            <!-- Pile Estimate Card -->
-            <div class="col d-flex align-items-start animate__animated animate__fadeInUp">
-                <div class="card w-100 shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <i class="fas fa-ruler-combined card-icon"></i>
-                            Pile Estimate
-                        </h3>
-                        <p class="card-text">Calculate reinforcement and material requirements for piles.</p>
-                        <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary btn-ripple">
-                            Calculate Pile Estimate
-                        </a>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="feature col">
+                <div class="feature-card h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-calculator"></i>
                     </div>
+                    <h3>Pile Estimate</h3>
+                    <p>Calculate material quantities and costs for pile foundations with our comprehensive pile estimate calculator.</p>
+                    <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary">
+                        Open Calculator
+                    </a>
                 </div>
             </div>
-
-            <!-- Long Tied Column Card -->
-            <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                <div class="card w-100 shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <i class="fas fa-columns card-icon"></i>
-                            Long Tied Column
-                        </h3>
-                        <p class="card-text">Calculate reinforcement and material requirements for long tied columns.</p>
-                        <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary btn-ripple">
-                            Calculate Long Tied Column
-                        </a>
+            <div class="feature col">
+                <div class="feature-card h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-columns"></i>
                     </div>
+                    <h3>Long Tied Column</h3>
+                    <p>Estimate materials and costs for long tied columns with our specialized calculator.</p>
+                    <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary">
+                        Open Calculator
+                    </a>
                 </div>
             </div>
-
-            <!-- Long Circular Column Card -->
-            <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                <div class="card w-100 shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <i class="fas fa-circle card-icon"></i>
-                            Long Circular Column
-                        </h3>
-                        <p class="card-text">Calculate reinforcement and material requirements for long circular columns.</p>
-                        <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary btn-ripple">
-                            Calculate Long Circular Column
-                        </a>
+            <div class="feature col">
+                <div class="feature-card h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-circle"></i>
                     </div>
+                    <h3>Long Circular Column</h3>
+                    <p>Calculate quantities and costs for long circular columns with precision and ease.</p>
+                    <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary">
+                        Open Calculator
+                    </a>
                 </div>
             </div>
-
-            <!-- Slab Estimate Card -->
-            <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
-                <div class="card w-100 shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <i class="fas fa-square card-icon"></i>
-                            Slab Estimate
-                        </h3>
-                        <p class="card-text">Calculate reinforcement and material requirements for slabs.</p>
-                        <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary btn-ripple">
-                            Calculate Slab Estimate
-                        </a>
+            <div class="feature col">
+                <div class="feature-card h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-th"></i>
                     </div>
+                    <h3>Slab Estimate</h3>
+                    <p>Get accurate material estimates and costs for concrete slabs with our dedicated calculator.</p>
+                    <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary">
+                        Open Calculator
+                    </a>
+                </div>
+            </div>
+            <div class="feature col">
+                <div class="feature-card h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-columns"></i>
+                    </div>
+                    <h3>Short Tied Column</h3>
+                    <p>Calculate material quantities and costs for short tied columns with precision.</p>
+                    <a href="{{ url_for('short_tied_column') }}" class="btn btn-primary">
+                        Open Calculator
+                    </a>
                 </div>
             </div>
         </div>
@@ -114,39 +111,37 @@
     <!-- Coming Soon Section -->
     <div class="coming-soon mt-5">
         <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn" style="animation-delay: 0.5s">Coming Soon</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% set options = [
-                ('Short Tied Column', 'Compute estimates for short tied columns with proper reinforcement details.', 'columns'),
-                ('Short Circular Column', 'Compute estimates for short circular columns with ties.', 'circle'),
-                ('Grade Beam', 'Calculate materials and reinforcement for grade beams with accurate measurements.', 'grip-lines'),
-                ('Floor Beam', 'Estimate beam requirements including concrete volume and steel reinforcement.', 'grip-lines-vertical'),
-                ('Stair', 'Calculate concrete and reinforcement requirements for staircase construction.', 'stairs'),
-                ('Slab', 'Compute slab estimates with proper thickness and reinforcement details.', 'square'),
-                ('RCC Wall', 'Calculate materials for RCC walls including reinforcement patterns.', 'wall'),
-                ('Water Reservoir', 'Estimate materials for water tank construction with waterproofing.', 'water'),
-                ('Brick Masonry', 'Calculate brick requirements with mortar ratio and wastage.', 'border-all'),
-                ('Plaster and Paint Work', 'Estimate plaster materials and paint coverage with wastage.', 'paint-roller'),
-                ('Tiles Work', 'Calculate tile requirements with adhesive and grouting materials.', 'th-large'),
-                ('Rectangular Pile Cap', 'Compute pile cap estimates for rectangular configurations.', 'vector-square'),
-                ('Trapezoidal Pile Cap', 'Calculate materials for trapezoidal pile cap arrangements.', 'draw-polygon'),
-                ('Mat Foundation', 'Estimate materials for mat foundation with reinforcement details.', 'layer-group'),
-                ('Footing Estimate', 'Calculate isolated and combined footing requirements.', 'shoe-prints'),
-                ('Result', 'View and export detailed estimation reports.', 'file-export')
-            ] %}
-            {% for title, description, icon in options %}
-            <div class="col d-flex align-items-start animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 + 0.6 }}s">
-                <div class="card w-100 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-{{ icon }} card-icon"></i>
-                            {{ title }}
-                        </h5>
-                        <p class="card-text">{{ description }}</p>
-                        <button class="btn btn-secondary" disabled>Coming Soon</button>
+        <div class="row g-4 py-3 row-cols-1 row-cols-lg-3">
+            <div class="feature col">
+                <div class="feature-card h-100 disabled">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-square"></i>
                     </div>
+                    <h3>Short Circular Column</h3>
+                    <p>Coming soon: A comprehensive calculator for short circular column estimates.</p>
+                    <button class="btn btn-secondary" disabled>Coming Soon</button>
                 </div>
             </div>
-            {% endfor %}
+            <div class="feature col">
+                <div class="feature-card h-100 disabled">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-wall"></i>
+                    </div>
+                    <h3>Wall Estimate</h3>
+                    <p>Coming soon: Calculate material quantities and costs for wall construction.</p>
+                    <button class="btn btn-secondary" disabled>Coming Soon</button>
+                </div>
+            </div>
+            <div class="feature col">
+                <div class="feature-card h-100 disabled">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-stairs"></i>
+                    </div>
+                    <h3>Stair Estimate</h3>
+                    <p>Coming soon: Estimate materials and costs for staircase construction.</p>
+                    <button class="btn btn-secondary" disabled>Coming Soon</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

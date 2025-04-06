@@ -754,6 +754,180 @@ def calculate_reinforcement_details(rebar_data, column_data, wastage_percent):
 
     return rebar_by_size
 
+@app.route('/short-tied-column')
+def short_tied_column():
+    return render_template('short-tied-column.html')
+
+@app.route('/calculate-short-tied-column', methods=['POST'])
+def calculate_short_tied_column():
+    try:
+        data = request.get_json()
+        
+        # Extract column data
+        column_data = []
+        for i in range(15):  # Support up to 15 columns
+            col_key = f'type_{i+1}'
+            if col_key in data:
+                col = data[col_key]
+                if col['column_nos']:  # Only process if column_nos exists
+                    column_data.append({
+                        'column_nos': float(col['column_nos']),
+                        'length': float(col['length']),
+                        'breadth': float(col['breadth']),
+                        'clear_cover': float(col['clear_cover']),
+                        'height': float(col['height']),
+                        'large_dia': {
+                            'size': float(col['large_dia_size']) if col['large_dia_size'] else 0,
+                            'nos': float(col['large_dia_nos']) if col['large_dia_nos'] else 0
+                        },
+                        'small_dia': {
+                            'size': float(col['small_dia_size']) if col['small_dia_size'] else 0,
+                            'nos': float(col['small_dia_nos']) if col['small_dia_nos'] else 0
+                        },
+                        'development_length': float(col['development_length']) if col['development_length'] else 0,
+                        'tie_rod': {
+                            'size': float(col['tie_rod_size']) if col['tie_rod_size'] else 0,
+                            'spacing': float(col['tie_spacing']) if col['tie_spacing'] else 0,
+                            'hook_length': float(col['hook_length']) if col['hook_length'] else 0
+                        },
+                        'extra_tie_1': float(col['extra_tie_1']) if col['extra_tie_1'] else 0,
+                        'extra_tie_2': float(col['extra_tie_2']) if col['extra_tie_2'] else 0
+                    })
+
+        # Extract RCC casting ratio
+        rcc_ratio = {
+            'type_1': float(data['rcc_ratio']['type_1']) if data['rcc_ratio']['type_1'] else 0,
+            'type_2': float(data['rcc_ratio']['type_2']) if data['rcc_ratio']['type_2'] else 0,
+            'type_3': float(data['rcc_ratio']['type_3']) if data['rcc_ratio']['type_3'] else 0
+        }
+        total_ratio = sum(rcc_ratio.values())
+
+        # Get rates and wastage
+        rates_and_wastage = data.get('rates_and_wastage', {})
+        wastage_percent = float(rates_and_wastage.get('wastage_percent', 0))
+        rates = {
+            'cement': float(rates_and_wastage.get('cement_rate', 0)),
+            'sand': float(rates_and_wastage.get('sand_rate', 0)),
+            'aggregate': float(rates_and_wastage.get('aggregate_rate', 0)),
+            'brick': float(rates_and_wastage.get('brick_rate', 0)),
+            'rebar': float(rates_and_wastage.get('rebar_rate', 0)),
+            'formwork': float(rates_and_wastage.get('formwork_rate', 0)),
+            'casting': float(rates_and_wastage.get('casting_rate', 0))
+        }
+
+        # Calculate quantities for each column
+        results = {
+            'cement': 0,
+            'sand': 0,
+            'aggregate': 0,
+            'brick': 0,
+            'rebar': 0,
+            'formwork': 0,
+            'casting': 0
+        }
+
+        rebar_sizes = {8: 0, 10: 0, 12: 0, 16: 0, 20: 0, 25: 0, 28: 0, 32: 0}
+
+        for col in column_data:
+            # Calculate volume in cubic feet
+            volume = (col['length']/12 * col['breadth']/12 * col['height']) * col['column_nos']
+            
+            # Calculate materials based on ratio
+            if total_ratio > 0:
+                results['cement'] += (volume * rcc_ratio['type_1'] * 1.54) / (total_ratio * 1.25)
+                results['sand'] += (volume * rcc_ratio['type_2'] * 1.54) / total_ratio
+                results['aggregate'] += (volume * rcc_ratio['type_3'] * 1.54) / total_ratio
+                results['brick'] += results['aggregate'] * 9.5  # Convert aggregate to brick numbers
+            
+            # Calculate formwork area in square feet
+            formwork = (col['height'] * ((col['length']+col['length'])/12) * 
+                       ((col['breadth']+col['breadth'])/12)) * col['column_nos']
+            results['formwork'] += formwork
+            
+            # Calculate casting volume
+            results['casting'] += volume
+
+            # Calculate rebar weights
+            def calc_rebar_weight(dia, nos, length):
+                if dia and nos:
+                    return (dia * dia / 532) * nos * length
+                return 0
+
+            # Large diameter bars
+            if col['large_dia']['size'] and col['large_dia']['nos']:
+                length = col['height'] + (col['development_length']/12 if col['development_length'] else 0)
+                weight = calc_rebar_weight(col['large_dia']['size'], 
+                                        col['large_dia']['nos'], 
+                                        length) * col['column_nos']
+                results['rebar'] += weight
+                rebar_sizes[int(col['large_dia']['size'])] += weight
+
+            # Small diameter bars
+            if col['small_dia']['size'] and col['small_dia']['nos']:
+                length = col['height'] + (col['development_length']/12 if col['development_length'] else 0)
+                weight = calc_rebar_weight(col['small_dia']['size'], 
+                                        col['small_dia']['nos'], 
+                                        length) * col['column_nos']
+                results['rebar'] += weight
+                rebar_sizes[int(col['small_dia']['size'])] += weight
+
+            # Tie rods
+            if col['tie_rod']['size'] and col['tie_rod']['spacing']:
+                ties_count = (col['height']/(col['tie_rod']['spacing']/12)) + 1
+                perimeter = ((col['length']*2 - col['clear_cover']*2) + 
+                           (col['breadth']*2 - col['clear_cover']*2))/12
+                
+                # Main ties
+                weight = calc_rebar_weight(col['tie_rod']['size'], 
+                                        ties_count, 
+                                        perimeter) * col['column_nos']
+                results['rebar'] += weight
+                rebar_sizes[int(col['tie_rod']['size'])] += weight
+
+                # Extra ties
+                for extra_tie in [col['extra_tie_1'], col['extra_tie_2']]:
+                    if extra_tie:
+                        weight = calc_rebar_weight(col['tie_rod']['size'], 
+                                                ties_count, 
+                                                extra_tie/12) * col['column_nos']
+                        results['rebar'] += weight
+                        rebar_sizes[int(col['tie_rod']['size'])] += weight
+
+        # Add wastage
+        for key in results:
+            if results[key] > 0:
+                results[key] = results[key] * (1 + wastage_percent/100)
+
+        # Calculate costs
+        costs = {
+            'cement': results['cement'] * rates['cement'],
+            'sand': results['sand'] * rates['sand'],
+            'aggregate': results['aggregate'] * rates['aggregate'],
+            'brick': results['brick'] * rates['brick'],
+            'rebar': results['rebar'] * rates['rebar'],
+            'formwork': results['formwork'] * rates['formwork'],
+            'casting': results['casting'] * rates['casting']
+        }
+
+        # Add wastage to rebar sizes
+        for size in rebar_sizes:
+            if rebar_sizes[size] > 0:
+                rebar_sizes[size] = rebar_sizes[size] * (1 + wastage_percent/100)
+
+        return jsonify({
+            'success': True,
+            'results': results,
+            'costs': costs,
+            'rebar_sizes': rebar_sizes,
+            'rates': rates
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 # Make sure there are no spaces or tabs before this line
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))

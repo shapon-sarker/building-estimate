@@ -1,0 +1,492 @@
+/* Variables */
+:root {
+    --primary-color: #2b4c7e;
+    --secondary-color: #567ebb;
+    --accent-color: #ff6b6b;
+    --background-start: #ffffff;
+    --background-end: #f8f9fa;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-light: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --glow-color: rgba(43, 76, 126, 0.15);
+    --transition-speed: 0.3s;
+}
+
+/* General Styles */
+body {
+    background: linear-gradient(135deg, var(--background-start), var(--background-end));
+    color: var(--text-dark);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    max-width: 1800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Page Header */
+.page-header {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--glow-color) 0%, rgba(255,255,255,0) 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.page-header h2 {
+    color: var(--text-dark);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.page-header p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    position: relative;
+}
+
+/* Card Styles */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px var(--shadow-color);
+}
+
+.card::before {
+    display: none;
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-bottom: none;
+    border-radius: 14px 14px 0 0 !important;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.card-body {
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+}
+
+/* Table Styles */
+.table-responsive {
+    border-radius: 10px;
+    overflow-x: auto;
+    background: var(--card-bg);
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scrollbar-width: thin; /* For Firefox */
+}
+
+/* Ensure the table takes full width */
+.table {
+    margin-bottom: 0;
+    min-width: 1500px; /* Ensure table is wide enough to fit all columns */
+    width: 100%;
+}
+
+/* Fix the first column */
+.table td:first-child,
+.table th:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--card-bg);
+    z-index: 2;
+    min-width: 150px; /* Give more space to description column */
+}
+
+/* Ensure header stays above fixed first column */
+.table th:first-child {
+    z-index: 3;
+    background: var(--primary-color);
+}
+
+/* Set consistent width for input columns */
+.table td:not(:first-child) {
+    min-width: 120px;
+    width: 120px;
+}
+
+/* Make inputs fill their cells */
+.table .form-control {
+    width: 100%;
+    min-width: 0; /* Override previous min-width */
+    padding: 0.5rem;
+}
+
+/* Custom scrollbar specifically for table */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--background-end);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Add scroll indicator */
+.card-body {
+    position: relative;
+}
+
+.card-body::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.05));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card-body:hover::after {
+    opacity: 1;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all var(--transition-speed);
+    min-width: 80px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(43, 76, 126, 0.15);
+    background-color: #ffffff;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.8rem 1.5rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border: none;
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.btn-primary::before {
+    display: none;
+}
+
+.btn-secondary {
+    background: var(--text-muted);
+    border: none;
+    color: var(--text-light);
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Results Section */
+#results {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+#results.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Results Table Styles */
+#results .table-responsive {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#results .table {
+    min-width: auto;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#results .table th {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    z-index: 2;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 1rem;
+}
+
+#results .table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+    color: var(--text-dark);
+    background-color: var(--card-bg);
+}
+
+/* First column in results table */
+#results .table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: var(--card-bg);
+    font-weight: 500;
+    z-index: 1;
+}
+
+#results .table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+
+/* Results table hover effect */
+#results .table tr:hover td {
+    background-color: rgba(43, 76, 126, 0.05);
+}
+
+#results .table tr:hover td:first-child {
+    background-color: rgba(43, 76, 126, 0.05);
+}
+
+/* Ensure text alignment in results */
+#results .text-end {
+    text-align: right !important;
+}
+
+/* Total row styling */
+#results .table tr:last-child {
+    border-top: 2px solid var(--primary-color);
+}
+
+#results .table tr:last-child td {
+    font-weight: 600;
+    background-color: rgba(43, 76, 126, 0.05);
+}
+
+/* Reinforcement table specific styles */
+#results .card:last-child .table {
+    min-width: auto;
+    width: auto;
+    margin: 0 auto;
+}
+
+#results .card:last-child .table th,
+#results .card:last-child .table td {
+    min-width: 200px;
+    width: auto;
+    padding: 0.75rem 1.5rem;
+}
+
+#results .card:last-child .table td:first-child,
+#results .card:last-child .table th:first-child {
+    text-align: left;
+}
+
+#results .card:last-child .table td:last-child,
+#results .card:last-child .table th:last-child {
+    text-align: right;
+}
+
+/* Print styles for results */
+@media print {
+    #results {
+        display: block !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    #results .table-responsive {
+        max-height: none;
+        overflow: visible;
+    }
+    
+    #results .table th,
+    #results .table td:first-child {
+        position: static;
+    }
+    
+    #results .table tr:last-child {
+        border-top: 2px solid #000 !important;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 15px;
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--text-muted);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    z-index: 1001;
+    animation: spin 1s infinite linear;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .form-control, .form-select {
+        min-width: 120px;
+    }
+    
+    .table td {
+        white-space: nowrap;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .page-header h2 {
+        font-size: 2rem;
+    }
+    
+    .page-header p {
+        font-size: 1rem;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-end);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Input Validation Styles */
+.was-validated .form-control:valid {
+    border-color: #2ecc71;
+    background-image: none;
+}
+
+.was-validated .form-control:invalid {
+    border-color: var(--accent-color);
+    background-image: none;
+}
+
+/* Print Styles */
+@media print {
+    .card {
+        box-shadow: none !important;
+        border: 1px solid var(--border-color) !important;
+        transform: none !important;
+    }
+    
+    .btn {
+        display: none !important;
+    }
+    
+    .page-header::before {
+        display: none;
+    }
+} 
