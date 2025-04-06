@@ -157,6 +157,12 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Remove loading overlay if it's active when page loads
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.remove('active');
+        }
+
         // Initialize particles
         particlesJS('particles-js', {
             particles: {
@@ -210,9 +216,26 @@
         // Loading animation
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', e => {
-                const overlay = document.querySelector('.loading-overlay');
-                overlay.classList.add('active');
+                // Only show loading for calculator links
+                if (link.href.includes('calculate')) {
+                    const overlay = document.querySelector('.loading-overlay');
+                    overlay.classList.add('active');
+                    
+                    // Set a timeout to remove the overlay if navigation takes too long
+                    setTimeout(() => {
+                        overlay.classList.remove('active');
+                    }, 5000); // 5 second timeout
+                }
             });
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('pageshow', (event) => {
+            // Remove loading overlay when navigating back to the page
+            const overlay = document.querySelector('.loading-overlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
         });
 
         // Scroll progress
