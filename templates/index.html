@@ -35,6 +35,11 @@
     </svg>
 </div>
 
+<!-- Dark Mode Toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+    <i class="fas fa-moon"></i>
+</button>
+
 <div class="container px-4 py-5">
     <div class="company-header text-center mb-5 animate__animated animate__fadeIn">
         <h1>Building Estimate</h1>
@@ -46,73 +51,73 @@
         <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Active Calculators</h2>
         <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="pile">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-calculator"></i>
                     </div>
                     <h3>Pile Estimate</h3>
                     <p>Calculate material quantities and costs for pile foundations with our comprehensive pile estimate calculator.</p>
-                    <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary">
+                    <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
             </div>
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="long-tied">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-columns"></i>
                     </div>
                     <h3>Long Tied Column</h3>
                     <p>Estimate materials and costs for long tied columns with our specialized calculator.</p>
-                    <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary">
+                    <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
             </div>
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="long-circular">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-circle"></i>
                     </div>
                     <h3>Long Circular Column</h3>
                     <p>Calculate quantities and costs for long circular columns with precision and ease.</p>
-                    <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary">
+                    <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
             </div>
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="slab">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-th"></i>
                     </div>
                     <h3>Slab Estimate</h3>
                     <p>Get accurate material estimates and costs for concrete slabs with our dedicated calculator.</p>
-                    <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary">
+                    <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
             </div>
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="short-tied">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-columns"></i>
                     </div>
                     <h3>Short Tied Column</h3>
                     <p>Calculate material quantities and costs for short tied columns with precision.</p>
-                    <a href="{{ url_for('short_tied_column') }}" class="btn btn-primary">
+                    <a href="{{ url_for('short_tied_column') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
             </div>
             <div class="feature col">
-                <div class="feature-card h-100">
+                <div class="feature-card h-100" data-calculator="short-circular">
                     <div class="feature-icon mb-3">
                         <i class="fas fa-circle"></i>
                     </div>
                     <h3>Short Circular Column</h3>
                     <p>Calculate material quantities and costs for short circular columns with precision.</p>
-                    <a href="{{ url_for('short_circular_column') }}" class="btn btn-primary">
+                    <a href="{{ url_for('short_circular_column') }}" class="btn btn-primary btn-ripple">
                         Open Calculator
                     </a>
                 </div>
@@ -154,13 +159,33 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
         // Remove loading overlay if it's active when page loads
         const loadingOverlay = document.querySelector('.loading-overlay');
         if (loadingOverlay) {
             loadingOverlay.classList.remove('active');
         }
 
-        // Initialize particles
+        // Initialize particles with enhanced configuration
         particlesJS('particles-js', {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
@@ -182,14 +207,27 @@
             retina_detect: true
         });
 
-        // Card hover effect
-        document.querySelectorAll('.card').forEach(card => {
+        // Enhanced card hover effect
+        document.querySelectorAll('.feature-card').forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
                 const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
                 const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+                
                 card.style.setProperty('--mouse-x', `${x}%`);
                 card.style.setProperty('--mouse-y', `${y}%`);
+                
+                // Add dynamic glow effect based on calculator type
+                const calculatorType = card.getAttribute('data-calculator');
+                if (calculatorType) {
+                    const color = getComputedStyle(card).getPropertyValue('--calculator-color');
+                    card.style.boxShadow = `0 20px 40px var(--glass-shadow),
+                                          0 0 20px ${color}`;
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 20px 40px var(--glass-shadow), 0 0 20px var(--glow-color)';
             });
         });
 
@@ -213,29 +251,26 @@
         // Loading animation
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', e => {
-                // Only show loading for calculator links
                 if (link.href.includes('calculate')) {
                     const overlay = document.querySelector('.loading-overlay');
                     overlay.classList.add('active');
                     
-                    // Set a timeout to remove the overlay if navigation takes too long
                     setTimeout(() => {
                         overlay.classList.remove('active');
-                    }, 5000); // 5 second timeout
+                    }, 5000);
                 }
             });
         });
 
         // Handle browser back/forward buttons
         window.addEventListener('pageshow', (event) => {
-            // Remove loading overlay when navigating back to the page
             const overlay = document.querySelector('.loading-overlay');
             if (overlay) {
                 overlay.classList.remove('active');
             }
         });
 
-        // Scroll progress
+        // Enhanced scroll progress
         const progressBar = document.querySelector('.scroll-progress');
         window.addEventListener('scroll', () => {
             const winScroll = document.documentElement.scrollTop;
@@ -249,15 +284,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animate__fadeInUp');
-                    entry.target.style.opacity = 1;
                 }
             });
-        }, {
-            threshold: 0.1
-        });
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = 0;
+        document.querySelectorAll('.feature-card').forEach(card => {
             observer.observe(card);
         });
     });
