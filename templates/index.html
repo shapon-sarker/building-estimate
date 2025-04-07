@@ -9,400 +9,439 @@
 {% endblock %}
 
 {% block content %}
-<!-- Scroll Progress Bar -->
-<div class="scroll-progress"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Estimate - Professional Construction Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loader"></div>
+    </div>
 
-<!-- Loading Overlay -->
-<div class="loading-overlay">
-    <div class="loader"></div>
-</div>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
 
-<!-- Particle Background -->
-<div id="particles-js"></div>
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+        <i id="theme-icon" class="fas fa-moon"></i>
+    </button>
 
-<!-- Floating Shapes -->
-<div class="floating-shapes">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-</div>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
 
-<!-- Dark Mode Toggle -->
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-    <i class="fas fa-moon"></i>
-</button>
+    <!-- Floating Shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
 
-<!-- Hero Section -->
-<div class="hero-container">
-    <div class="hero-left">
-        <div class="hero-content">
-            <h1 class="hero-title">Building Estimate</h1>
-            <h2 class="hero-subtitle">Professional Construction Calculator</h2>
-            <p class="hero-description">
-                Get accurate material calculations and cost estimates for your construction projects. 
-                Our professional calculators help you plan and budget effectively.
-            </p>
-            <div class="hero-cta">
-                <a href="#calculators" class="btn btn-primary btn-ripple">Explore Calculators</a>
-                <a href="#contact" class="btn btn-outline btn-ripple">Contact Us</a>
-            </div>
-            <div class="hero-features">
-                <div class="feature-tag">
-                    <i class="fas fa-calculator"></i>
-                    <span>Accurate Estimates</span>
-                </div>
-                <div class="feature-tag">
-                    <i class="fas fa-clock"></i>
-                    <span>Save Time</span>
-                </div>
-                <div class="feature-tag">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Cost Analysis</span>
+    <!-- Company Info Banner -->
+    <div class="company-banner">
+        <div class="container">
+            <div class="company-info">
+                <h1 class="company-name">Building Estimate</h1>
+                <div class="company-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Construction Ave, Building District</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@buildingestimate.com</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="hero-right">
-        <div class="hero-image-container">
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Construction Site">
-            </div>
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-icon">
+
+    <!-- Hero Section -->
+    <div class="hero-container">
+        <div class="hero-left">
+            <div class="hero-content">
+                <h1 class="hero-title">Building Estimate</h1>
+                <h2 class="hero-subtitle">Professional Construction Calculator</h2>
+                <p class="hero-description">
+                    Get accurate material calculations and cost estimates for your construction projects. 
+                    Our professional calculators help you plan and budget effectively.
+                </p>
+                <div class="hero-cta">
+                    <a href="#calculators" class="btn btn-primary btn-ripple">Explore Calculators</a>
+                    <a href="#contact" class="btn btn-outline btn-ripple">Contact Us</a>
+                </div>
+                <div class="hero-features">
+                    <div class="feature-tag">
                         <i class="fas fa-calculator"></i>
+                        <span>Accurate Estimates</span>
                     </div>
-                    <div class="stat-info">
-                        <span class="stat-number">6+</span>
-                        <span class="stat-label">Calculators</span>
+                    <div class="feature-tag">
+                        <i class="fas fa-clock"></i>
+                        <span>Save Time</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <span class="stat-number">1000+</span>
-                        <span class="stat-label">Users</span>
+                    <div class="feature-tag">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Cost Analysis</span>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="hero-image-container">
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Construction Site">
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">6+</span>
+                            <span class="stat-label">Calculators</span>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <span class="stat-number">99%</span>
-                        <span class="stat-label">Accuracy</span>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">1000+</span>
+                            <span class="stat-label">Users</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">99%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container px-4 py-5" id="calculators">
-    <!-- Active Calculators Section -->
-    <div class="active-calculators mb-5">
-        <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Active Calculators</h2>
-        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="pile">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-building"></i>
+    <div class="container px-4 py-5" id="calculators">
+        <!-- Active Calculators Section -->
+        <div class="active-calculators mb-5">
+            <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Active Calculators</h2>
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="pile">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Pile Estimate</h3>
+                        <p>Calculate material quantities and costs for pile foundations with our comprehensive pile estimate calculator.</p>
+                        <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
                     </div>
-                    <h3>Pile Estimate</h3>
-                    <p>Calculate material quantities and costs for pile foundations with our comprehensive pile estimate calculator.</p>
-                    <a href="{{ url_for('pile_estimate') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
+                </div>
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="long-tied">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-columns"></i>
+                        </div>
+                        <h3>Long Tied Column</h3>
+                        <p>Estimate materials and costs for long tied columns with our specialized calculator.</p>
+                        <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
+                    </div>
+                </div>
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="long-circular">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <h3>Long Circular Column</h3>
+                        <p>Calculate quantities and costs for long circular columns with precision and ease.</p>
+                        <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
+                    </div>
+                </div>
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="slab">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-th"></i>
+                        </div>
+                        <h3>Slab Estimate</h3>
+                        <p>Get accurate material estimates and costs for concrete slabs with our dedicated calculator.</p>
+                        <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
+                    </div>
+                </div>
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="short-tied">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-columns"></i>
+                        </div>
+                        <h3>Short Tied Column</h3>
+                        <p>Calculate material quantities and costs for short tied columns with precision.</p>
+                        <a href="{{ url_for('short_tied_column') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
+                    </div>
+                </div>
+                <div class="feature col">
+                    <div class="feature-card h-100" data-calculator="short-circular">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <h3>Short Circular Column</h3>
+                        <p>Calculate material quantities and costs for short circular columns with precision.</p>
+                        <a href="{{ url_for('short_circular_column') }}" class="btn btn-primary btn-ripple">
+                            Open Calculator
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="long-tied">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-columns"></i>
+        </div>
+
+        <!-- Coming Soon Section -->
+        <div class="coming-soon mt-5">
+            <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn" style="animation-delay: 0.5s">Coming Soon</h2>
+            <div class="row g-4 py-3 row-cols-1 row-cols-lg-3">
+                <div class="feature col">
+                    <div class="feature-card h-100 disabled">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3>Road Estimate</h3>
+                        <p>Coming soon: Calculate material quantities and costs for road construction.</p>
+                        <button class="btn btn-secondary" disabled>Coming Soon</button>
                     </div>
-                    <h3>Long Tied Column</h3>
-                    <p>Estimate materials and costs for long tied columns with our specialized calculator.</p>
-                    <a href="{{ url_for('long_tied_column') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
                 </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="long-circular">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-circle"></i>
+                <div class="feature col">
+                    <div class="feature-card h-100 disabled">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3>Water Tank</h3>
+                        <p>Coming soon: Estimate materials and costs for water tank construction.</p>
+                        <button class="btn btn-secondary" disabled>Coming Soon</button>
                     </div>
-                    <h3>Long Circular Column</h3>
-                    <p>Calculate quantities and costs for long circular columns with precision and ease.</p>
-                    <a href="{{ url_for('long_circular_column') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
                 </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="slab">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-th"></i>
+                <div class="feature col">
+                    <div class="feature-card h-100 disabled">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-drafting-compass"></i>
+                        </div>
+                        <h3>Design Estimate</h3>
+                        <p>Coming soon: Calculate requirements for architectural design projects.</p>
+                        <button class="btn btn-secondary" disabled>Coming Soon</button>
                     </div>
-                    <h3>Slab Estimate</h3>
-                    <p>Get accurate material estimates and costs for concrete slabs with our dedicated calculator.</p>
-                    <a href="{{ url_for('slab_estimate') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
-                </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="short-tied">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-columns"></i>
-                    </div>
-                    <h3>Short Tied Column</h3>
-                    <p>Calculate material quantities and costs for short tied columns with precision.</p>
-                    <a href="{{ url_for('short_tied_column') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
-                </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100" data-calculator="short-circular">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-circle"></i>
-                    </div>
-                    <h3>Short Circular Column</h3>
-                    <p>Calculate material quantities and costs for short circular columns with precision.</p>
-                    <a href="{{ url_for('short_circular_column') }}" class="btn btn-primary btn-ripple">
-                        Open Calculator
-                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Coming Soon Section -->
-    <div class="coming-soon mt-5">
-        <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn" style="animation-delay: 0.5s">Coming Soon</h2>
-        <div class="row g-4 py-3 row-cols-1 row-cols-lg-3">
-            <div class="feature col">
-                <div class="feature-card h-100 disabled">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-road"></i>
+    <!-- Contact Section -->
+    <div class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Contact Us</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>123 Construction Ave, Building District</p>
+                        </div>
                     </div>
-                    <h3>Road Estimate</h3>
-                    <p>Coming soon: Calculate material quantities and costs for road construction.</p>
-                    <button class="btn btn-secondary" disabled>Coming Soon</button>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@buildingestimate.com</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100 disabled">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h3>Water Tank</h3>
-                    <p>Coming soon: Estimate materials and costs for water tank construction.</p>
-                    <button class="btn btn-secondary" disabled>Coming Soon</button>
-                </div>
-            </div>
-            <div class="feature col">
-                <div class="feature-card h-100 disabled">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-drafting-compass"></i>
-                    </div>
-                    <h3>Design Estimate</h3>
-                    <p>Coming soon: Calculate requirements for architectural design projects.</p>
-                    <button class="btn btn-secondary" disabled>Coming Soon</button>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-ripple">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Contact Section -->
-<div class="contact-section" id="contact">
-    <div class="container">
-        <h2 class="section-title text-light mb-4 animate__animated animate__fadeIn">Contact Us</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h4>Location</h4>
-                        <p>123 Construction Ave, Building District</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h4>Phone</h4>
-                        <p>+1 (555) 123-4567</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h4>Email</h4>
-                        <p>info@buildingestimate.com</p>
-                    </div>
-                </div>
-            </div>
-            <div class="contact-form">
-                <form id="contactForm">
-                    <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-ripple">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<!-- Particles.js -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const icon = themeToggle.querySelector('i');
-        
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            updateThemeIcon(savedTheme);
             
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        });
-
-        // Remove loading overlay if it's active when page loads
-        const loadingOverlay = document.querySelector('.loading-overlay');
-        if (loadingOverlay) {
-            loadingOverlay.classList.remove('active');
-        }
-
-        // Initialize particles with enhanced configuration
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#ffffff' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.1, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.1, width: 1 },
-                move: { enable: true, speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out' }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true
-                }
-            },
-            retina_detect: true
-        });
-
-        // Enhanced card hover effect
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
-                const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+            // Theme toggle click handler
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
                 
-                card.style.setProperty('--mouse-x', `${x}%`);
-                card.style.setProperty('--mouse-y', `${y}%`);
-                
-                // Add dynamic glow effect based on calculator type
-                const calculatorType = card.getAttribute('data-calculator');
-                if (calculatorType) {
-                    const color = getComputedStyle(card).getPropertyValue('--calculator-color');
-                    card.style.boxShadow = `0 20px 40px var(--glass-shadow),
-                                          0 0 20px ${color}`;
-                }
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
             });
             
-            card.addEventListener('mouseleave', () => {
-                card.style.boxShadow = '0 20px 40px var(--glass-shadow), 0 0 20px var(--glow-color)';
-            });
-        });
-
-        // Ripple effect for buttons
-        document.querySelectorAll('.btn-ripple').forEach(button => {
-            button.addEventListener('click', e => {
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const ripple = document.createElement('span');
-                ripple.className = 'ripple';
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-                
-                button.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // Loading animation
-        document.querySelectorAll('a[href]').forEach(link => {
-            link.addEventListener('click', e => {
-                if (link.href.includes('calculate')) {
-                    const overlay = document.querySelector('.loading-overlay');
-                    overlay.classList.add('active');
-                    
-                    setTimeout(() => {
-                        overlay.classList.remove('active');
-                    }, 5000);
-                }
-            });
-        });
-
-        // Handle browser back/forward buttons
-        window.addEventListener('pageshow', (event) => {
-            const overlay = document.querySelector('.loading-overlay');
-            if (overlay) {
-                overlay.classList.remove('active');
+            // Update theme icon
+            function updateThemeIcon(theme) {
+                themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
             }
-        });
 
-        // Enhanced scroll progress
-        const progressBar = document.querySelector('.scroll-progress');
-        window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            progressBar.style.transform = `scaleX(${scrolled / 100})`;
-        });
+            // Remove loading overlay if it's active when page loads
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('active');
+            }
 
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate__fadeInUp');
+            // Initialize particles with enhanced configuration
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#ffffff' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.1, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.1, width: 1 },
+                    move: { enable: true, speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out' }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'repulse' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+
+            // Enhanced card hover effect
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+                    const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+                    
+                    card.style.setProperty('--mouse-x', `${x}%`);
+                    card.style.setProperty('--mouse-y', `${y}%`);
+                    
+                    // Add dynamic glow effect based on calculator type
+                    const calculatorType = card.getAttribute('data-calculator');
+                    if (calculatorType) {
+                        const color = getComputedStyle(card).getPropertyValue('--calculator-color');
+                        card.style.boxShadow = `0 20px 40px var(--glass-shadow),
+                                              0 0 20px ${color}`;
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.boxShadow = '0 20px 40px var(--glass-shadow), 0 0 20px var(--glow-color)';
+                });
+            });
+
+            // Ripple effect for buttons
+            document.querySelectorAll('.btn-ripple').forEach(button => {
+                button.addEventListener('click', e => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    button.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+
+            // Loading animation
+            document.querySelectorAll('a[href]').forEach(link => {
+                link.addEventListener('click', e => {
+                    if (link.href.includes('calculate')) {
+                        const overlay = document.querySelector('.loading-overlay');
+                        overlay.classList.add('active');
+                        
+                        setTimeout(() => {
+                            overlay.classList.remove('active');
+                        }, 5000);
+                    }
+                });
+            });
+
+            // Handle browser back/forward buttons
+            window.addEventListener('pageshow', (event) => {
+                const overlay = document.querySelector('.loading-overlay');
+                if (overlay) {
+                    overlay.classList.remove('active');
                 }
             });
-        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.feature-card').forEach(card => {
-            observer.observe(card);
+            // Enhanced scroll progress
+            const progressBar = document.querySelector('.scroll-progress');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.transform = `scaleX(${scrolled / 100})`;
+            });
+
+            // Intersection Observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__fadeInUp');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.feature-card').forEach(card => {
+                observer.observe(card);
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>
 {% endblock %}
